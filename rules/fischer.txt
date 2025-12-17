@@ -1,0 +1,23 @@
+# Automate de Fischer
+Init:
+  Rail
+  0/2.Horizontal
+  1/3.HalfSlope
+Rail:
+  Rail
+Horizontal:
+  !HalfSlope: 1.Horizontal
+  HalfSlope: 1.Rail 0/2.Vertical 0/2.Multiple 0/2.Mark 1.HalfSlope
+HalfSlope:
+  !Horizontal: 1/3.HalfSlope
+Vertical:
+  !Rail: -1.Vertical
+  Rail: 1.Horizontal
+Multiple:
+  !Rail: -1.Multiple
+  Rail: +1.Rebound
+Rebound:
+  !Rail: 1.Rebound
+  Rail: -1.Multiple -1.Mark
+Mark:
+  -1.Mark

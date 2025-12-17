@@ -1,0 +1,54 @@
+FIRE_CONDITION = Gen_d Gen_g Wall
+BORDER_g = Diag_d Gen_d Gen_g
+
+Init: 0/0.Init_g 38/0.Init_d # définit la position des généraux
+
+@begin mirror("_g", "_d")
+Init_g: 0/0.Gen_g 0/0.Diag_g Border_g
+Border_g: Border_g
+Gen_g: 1.Tick_g 1.Slope_g 0.Wall 0.Even_g 1.Odd_g
+
+(!BORDER_g 1.!BORDER_g):
+    Even_g: Even_g
+    Odd_g: Odd_g
+    2.!BORDER_g:
+        Even_g: 1.Odd_g
+        Odd_g: 1.Even_g
+
+Diag_g: 1.Diag_g 1.Tick_g
+Wall: Wall Slope_g
+Tick_g:
+    !(Slope_g Even_g): -1.Tick_g
+Slope_g:
+    !Tick_g: 0.Slope_g
+    Tick_g: 1.Slope_g
+
+(OddSeg_g !Gen_g): 1.OddSeg_g
+OddSegStart_g: 1.OddSeg_g
+
+# Collisions des diagonales initiales
+(-1.Diag_g 1.Diag_d):
+    Gen_g Diag_g Gen_d Diag_d
+    -1.Odd_g: OddSegStart_g OddSegStart_d  # segment restant
+
+(0.Diag_g 1.Diag_d):
+    0.Gen_d 0.Diag_d 1.Gen_g 1.Diag_g
+    Even_g: OddSegStart_d 1.OddSegStart_g  # segment restant
+
+# Collisions entre une diagonale et une pente
+(Slope_g 1.Diag_d):
+    1.OddSeg_d:
+        Gen_d Diag_d Gen_g Diag_g
+        1.Odd_d: OddSegStart_d OddSegStart_g
+    1.!OddSeg_d:
+        Gen_d Diag_d 1.Gen_g 1.Diag_g
+        1.Even_d: OddSegStart_d 1.OddSegStart_g
+
+(-1.Slope_g -1.Tick_g -1.!Diag_g 1.Diag_d):
+    Gen_d Diag_d Gen_g Diag_g
+    1.Odd_d: OddSegStart_d OddSegStart_g
+
+(Border_g 1.FIRE_CONDITION): Fire
+@end
+
+(-1.FIRE_CONDITION 0.FIRE_CONDITION 1.FIRE_CONDITION): Fire

@@ -1,0 +1,36 @@
+.cell {
+    height: 30px;
+    width: 30px;
+    border: 1px solid #ddd;
+    background-color: white;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+
+    .st {
+        position: relative;
+        padding: 0;
+        width: 33.33%;
+        height: 33.33%;
+        border-radius: 100%;
+        &.neg {
+            position: relative;
+            padding: 0;
+    
+            &::before {
+                content: '';
+                position: absolute;
+                top: 35%;
+                left: -5%;
+                width: 110%;
+                height: 30%;
+                background-color: white;
+                transform: rotate(-45deg);
+            }
+        }
+    }
+
+}
