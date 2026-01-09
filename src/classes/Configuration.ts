@@ -1,15 +1,22 @@
-import { type Signal } from "../types.ts";
+import z from "zod";
+import { configurationFileSchema, type Signal } from "../types.ts";
 import Cell from "./Cell.ts";
 import Vector from "./Vector.ts";
 
-export abstract class Configuration<TCell extends Cell> {
+export abstract class Configuration {
+    id: string;
+
+    constructor() {
+        this.id = crypto.randomUUID();
+    }
+
     abstract clone(): this;
 
     abstract getSize(): Vector;
 
-    abstract getCellAt(c: Vector): TCell | null;
+    abstract getCellAt(c: Vector): Cell | null;
 
-    abstract setCellAt(c: Vector, cell: TCell): void;
+    abstract setCellAt(c: Vector, cell: Cell): void;
 
     getSignalsAt(c: Vector): Set<Signal> {
         const cell = this.getCellAt(c);
@@ -17,6 +24,15 @@ export abstract class Configuration<TCell extends Cell> {
             return new Set<Signal>();
         }
         return cell.signals;
+    }
+
+    getSignals(): Set<Signal> {
+        const signals = new Set<Signal>();
+        for (const c of this.iter()) {
+            const cell = this.getCellAt(c);
+            cell?.signals.forEach((s) => signals.add(s));
+        }
+        return signals;
     }
 
     addSignalAt(c: Vector, signal: Signal): void {
@@ -33,7 +49,7 @@ export abstract class Configuration<TCell extends Cell> {
         maxPosition: Vector
     ): Iterable<Vector>;
 
-    static withSize(dimensions: Vector): Configuration<Cell> {
+    static withSize(dimensions: Vector): Configuration {
         if (dimensions.coords.length === 1) {
             return Configuration1D.withSize(dimensions);
         } else {
@@ -42,7 +58,24 @@ export abstract class Configuration<TCell extends Cell> {
         }
     }
 
-    equals(other: Configuration<TCell>): boolean {
+    static fromJSON(
+        data: z.infer<typeof configurationFileSchema>
+    ): Configuration {
+        const config = Configuration.withSize(new Vector(data.size));
+        for (const [key, signalNames] of Object.entries(data.signals)) {
+            const coords = key.split(",").map((s) => parseInt(s, 10));
+            const cell = config.getCellAt(new Vector(coords));
+            if (cell === null) {
+                continue;
+            }
+            for (const signalName of signalNames) {
+                cell.addSignal(Symbol.for(signalName));
+            }
+        }
+        return config;
+    }
+
+    equals(other: Configuration): boolean {
         if (!this.getSize().equals(other.getSize())) {
             return false;
         }
@@ -61,15 +94,15 @@ export abstract class Configuration<TCell extends Cell> {
     }
 }
 
-export class Configuration1D<TCell extends Cell> extends Configuration<TCell> {
-    cells: TCell[];
+export class Configuration1D extends Configuration {
+    cells: Cell[];
 
-    constructor(cells: TCell[]) {
+    constructor(cells: Cell[]) {
         super();
         this.cells = cells;
     }
 
-    static withSize(dimensions: Vector): Configuration1D<Cell> {
+    static withSize(dimensions: Vector): Configuration1D {
         return new Configuration1D(
             Array(dimensions.at(0))
                 .fill(0)
@@ -78,7 +111,7 @@ export class Configuration1D<TCell extends Cell> extends Configuration<TCell> {
     }
 
     clone(): this {
-        return new (this.constructor as new (cells: TCell[]) => this)(
+        return new (this.constructor as new (cells: Cell[]) => this)(
             this.cells.map((cell) => cell.clone())
         );
     }
@@ -87,15 +120,15 @@ export class Configuration1D<TCell extends Cell> extends Configuration<TCell> {
         return new Vector([this.cells.length]);
     }
 
-    getCellAt(c: Vector): TCell | null {
-        const index = c.coords[0];
+    getCellAt(c: Vector): Cell | null {
+        const index = c.at(0);
         if (index < 0 || index >= this.cells.length) {
             return null;
         }
         return this.cells[index];
     }
 
-    setCellAt(c: Vector, cell: TCell): void {
+    setCellAt(c: Vector, cell: Cell): void {
         const index = c.coords[0];
         if (index >= 0 && index < this.cells.length) {
             this.cells[index] = cell;
@@ -122,19 +155,19 @@ export class Configuration1D<TCell extends Cell> extends Configuration<TCell> {
     }
 }
 
-export class Configuration2D<TCell extends Cell> extends Configuration<TCell> {
-    cells: TCell[];
+export class Configuration2D extends Configuration {
+    cells: Cell[];
     width: number;
     height: number;
 
-    constructor(cells: TCell[], width: number, height: number) {
+    constructor(cells: Cell[], width: number, height: number) {
         super();
         this.cells = cells;
         this.width = width;
         this.height = height;
     }
 
-    static withSize(dimensions: Vector): Configuration2D<Cell> {
+    static withSize(dimensions: Vector): Configuration2D {
         return new Configuration2D(
             Array(dimensions.at(0) * dimensions.at(1))
                 .fill(0)
@@ -145,7 +178,11 @@ export class Configuration2D<TCell extends Cell> extends Configuration<TCell> {
     }
 
     clone(): this {
-        return new (this.constructor as new (cells: TCell[], width: number, height: number) => this)(
+        return new (this.constructor as new (
+            cells: Cell[],
+            width: number,
+            height: number
+        ) => this)(
             this.cells.map((cell) => cell.clone()),
             this.width,
             this.height
@@ -156,8 +193,9 @@ export class Configuration2D<TCell extends Cell> extends Configuration<TCell> {
         return new Vector([this.width, this.height]);
     }
 
-    getCellAt(c: Vector): TCell | null {
-        const [x, y] = c.coords;
+    getCellAt(c: Vector): Cell | null {
+        const x = c.at(0);
+        const y = c.at(1);
         if (x < 0 || x >= this.width || y < 0 || y >= this.height) {
             return null;
         }
@@ -165,7 +203,7 @@ export class Configuration2D<TCell extends Cell> extends Configuration<TCell> {
         return this.cells[index];
     }
 
-    setCellAt(c: Vector, cell: TCell): void {
+    setCellAt(c: Vector, cell: Cell): void {
         const [x, y] = c.coords;
         if (x < 0 || x >= this.width || y < 0 || y >= this.height) {
             return;

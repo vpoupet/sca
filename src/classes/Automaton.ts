@@ -1,14 +1,17 @@
 import nearley from "nearley";
 import grammar from "../grammar/grammar.js";
 import type { ParsedLine } from "../grammar/types.ts";
-import type { Signal } from "../types.ts";
+import type {
+    ExtendedConfiguration,
+    IndexedConfiguration,
+    Signal,
+} from "../types.ts";
 import Clause, { Conjunction, EvalContext } from "./Clause.ts";
 import { Configuration } from "./Configuration.ts";
+import DirectedGraph from "./Graph.ts";
 import Rule from "./Rule.ts";
 import { transformations } from "./transformations/Transformation.ts";
-import DirectedGraph from "./Graph.ts";
 import Vector from "./Vector.ts";
-import Cell from "./Cell.ts";
 
 export default class Automaton {
     /**
@@ -334,10 +337,79 @@ export default class Automaton {
     }
 
     getDimension(): number {
-        return Math.max(
-            ...this.rules.map((rule) => rule.getDimension()),
-            0
-        );
+        return Math.max(...this.rules.map((rule) => rule.getDimension()), 0);
+    }
+
+    applyRules(configuration: ExtendedConfiguration): ExtendedConfiguration {
+        const outputConfiguration = configuration
+            .slice(1, this.maxFutureDepth)
+            .map((config) => config.clone());
+        for (let i = outputConfiguration.length; i < this.maxFutureDepth; i++) {
+            outputConfiguration.push(
+                Configuration.withSize(configuration[0].getSize())
+            );
+        }
+        const evalContext = this.getEvalContext();
+        for (const c of configuration[0].iterWithNeighborhood(
+            this.minNeighbor,
+            this.maxNeighbor
+        )) {
+            for (const rule of this.rules) {
+                if (rule.condition.eval(configuration[0], c, evalContext)) {
+                    rule.outputs.forEach((output) => {
+                        outputConfiguration[output.futureStep - 1].addSignalAt(
+                            Vector.add(c, output.position),
+                            output.signal
+                        );
+                    });
+                }
+            }
+        }
+        return outputConfiguration;
+    }
+
+    getHistoryAtTime(
+        time: number,
+        history: IndexedConfiguration[]
+    ): IndexedConfiguration[] {
+        let i = history.length - 1;
+        while (history[i].time > time) {
+            i -= 1;
+        }
+        const newHistory = history.slice(0, i + 1);
+        let lastIndexedConfiguration = newHistory[i];
+        while (lastIndexedConfiguration.time < time) {
+            lastIndexedConfiguration = {
+                time: lastIndexedConfiguration.time + 1,
+                configuration: this.applyRules(
+                    lastIndexedConfiguration.configuration
+                ),
+            };
+            newHistory.push(lastIndexedConfiguration);
+        }
+        // reduce history size
+        for (let i = newHistory.length - 1; i >= 2; i--) {
+            if (2 * (time - newHistory[i].time) >= time - newHistory[i - 2].time) {
+                // remove newHistory[i - 1]
+                newHistory.splice(i - 1, 1);
+            }
+        }
+        return newHistory;
+    }
+
+    static reduceHistory(
+        history: IndexedConfiguration[]
+    ): IndexedConfiguration[] {
+        const t0 = history.at(-1)!.time;
+        let i = history.length - 1;
+        while (i >= 2) {
+            if (2 * (t0 - history[i].time) >= t0 - history[i - 2].time) {
+                // remove history[i]
+                history.splice(i - 1, 1);
+            }
+            i -= 1;
+        }
+        return history;
     }
 
     /**
@@ -352,10 +424,7 @@ export default class Automaton {
      * already pre-computed future steps)
      * @param time the time index of the configuration in the diagram on which to apply the rules
      */
-    applyRulesOnDiagram<TCell extends Cell>(
-        diagram: Configuration<TCell>[],
-        time: number = 0
-    ) {
+    applyRulesOnDiagram(diagram: Configuration[], time: number = 0) {
         const configuration = diagram[time];
         const evalContext = this.getEvalContext();
         for (const c of configuration.iterWithNeighborhood(
@@ -384,10 +453,10 @@ export default class Automaton {
      * @param nbSteps the number of steps to compute
      * @returns a list of configurations representing the space-time diagram
      */
-    makeDiagram<TCell extends Cell>(
-        initialConfiguration: Configuration<TCell>,
+    makeDiagram(
+        initialConfiguration: Configuration,
         nbSteps: number
-    ): Configuration<Cell>[] {
+    ): Configuration[] {
         const diagram = [
             initialConfiguration.clone(),
             ...Array.from({ length: nbSteps }, () =>

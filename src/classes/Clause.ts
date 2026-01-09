@@ -1,5 +1,4 @@
 import { type Signal } from "../types.ts";
-import Cell from "./Cell.ts";
 import { Configuration } from "./Configuration.ts";
 import Vector from "./Vector.ts";
 
@@ -56,8 +55,8 @@ export type LiteralTransformation = {
 };
 
 export default abstract class Clause {
-    abstract eval<TCell extends Cell>(
-        configuration: Configuration<TCell>,
+    abstract eval(
+        configuration: Configuration,
         cell: Vector,
         context: EvalContext
     ): boolean;
@@ -138,8 +137,8 @@ export class Literal extends Clause {
         this.sign = sign;
     }
 
-    eval<TCell extends Cell>(
-        configuration: Configuration<TCell>,
+    eval(
+        configuration: Configuration,
         cell: Vector,
         context: EvalContext
     ): boolean {
@@ -248,8 +247,8 @@ export class Negation extends Clause {
         this.subclause = subclause;
     }
 
-    eval<TCell extends Cell>(
-        configuration: Configuration<TCell>,
+    eval(
+        configuration: Configuration,
         cell: Vector,
         context: EvalContext
     ): boolean {
@@ -360,8 +359,8 @@ export class Conjunction extends Clause {
         }
     }
 
-    eval<TCell extends Cell>(
-        configuration: Configuration<TCell>,
+    eval(
+        configuration: Configuration,
         cell: Vector,
         context: EvalContext
     ): boolean {
@@ -506,8 +505,8 @@ export class Disjunction extends Clause {
         }
     }
 
-    eval<TCell extends Cell>(
-        configuration: Configuration<TCell>,
+    eval(
+        configuration: Configuration,
         cell: Vector,
         context: EvalContext
     ): boolean {

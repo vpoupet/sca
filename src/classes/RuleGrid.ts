@@ -1,16 +1,16 @@
-import Cell, { InputCell } from "./Cell.ts";
+import Cell from "./Cell.ts";
 import Clause, { Conjunction, Literal } from "./Clause.ts";
 import { Configuration, Configuration1D } from "./Configuration.ts";
 import Rule, { RuleOutput } from "./Rule.ts";
 import Vector from "./Vector.ts";
 
 class RuleGrid {
-    inputCells: Configuration<InputCell>;
-    outputCells: Configuration<Cell>[];
+    inputCells: Configuration;
+    outputCells: Configuration[];
 
     constructor(
-        inputCells: Configuration<InputCell>,
-        outputCells: Configuration<Cell>[]
+        inputCells: Configuration,
+        outputCells: Configuration[]
     ) {
         this.inputCells = inputCells;
         this.outputCells = outputCells;
@@ -19,7 +19,7 @@ class RuleGrid {
     static withSize(radius: number, nbFutureSteps: number): RuleGrid {
         const nbCells = radius * 2 + 1;
         const inputs = new Configuration1D(
-            Array.from({ length: nbCells }, () => new InputCell())
+            Array.from({ length: nbCells }, () => new Cell())
         );
         const outputs = Array.from(
             { length: nbFutureSteps },
@@ -37,8 +37,8 @@ class RuleGrid {
 
     clone(): this {
         return new (this.constructor as new (
-            inputCells: Configuration<InputCell>,
-            outputCells: Configuration<Cell>[]
+            inputCells: Configuration,
+            outputCells: Configuration[]
         ) => this)(
             this.inputCells.clone(),
             this.outputCells.map((row) => row.clone())

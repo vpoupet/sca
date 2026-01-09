@@ -10,7 +10,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Cog } from "lucide-react";
-import { useState, type ReactElement } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { settingsSchema, type SettingsType } from "../types";
 import { Button } from "./ui/button";
@@ -33,7 +33,7 @@ interface SettingsComponentProps {
 
 export default function SettingsComponent(
     props: SettingsComponentProps
-): ReactElement {
+) {
     const { settings, setSettings } = props;
     const [isOpen, setIsOpen] = useState(false);
     const form = useForm<SettingsType>({
@@ -49,7 +49,10 @@ export default function SettingsComponent(
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-                <Button variant="outline" className="absolute cursor-pointer top-4 right-4">
+                <Button
+                    variant="outline"
+                    className="absolute text-lg cursor-pointer top-4 right-4"
+                >
                     <Cog /> Settings
                 </Button>
             </DialogTrigger>
@@ -83,19 +86,23 @@ export default function SettingsComponent(
                                         }}
                                         className="flex gap-4"
                                     >
-                                        <div className="flex gap-1 items-center">
+                                        <div className="flex items-center gap-1">
                                             <RadioGroupItem
                                                 value="1"
                                                 id="dimension-1"
                                             />
-                                            <label htmlFor="dimension-1">1</label>
+                                            <label htmlFor="dimension-1">
+                                                1
+                                            </label>
                                         </div>
-                                        <div className="flex gap-1 items-center">
+                                        <div className="flex items-center gap-1">
                                             <RadioGroupItem
                                                 value="2"
                                                 id="dimension-2"
                                             />
-                                            <label htmlFor="dimension-2">2</label>
+                                            <label htmlFor="dimension-2">
+                                                2
+                                            </label>
                                         </div>
                                     </RadioGroup>
                                 </div>
@@ -110,7 +117,9 @@ export default function SettingsComponent(
                             <FieldLegend>Edit Grid</FieldLegend>
                             <Field>
                                 <div className="flex gap-4">
-                                    <FieldLabel htmlFor="gridRadius">Radius</FieldLabel>
+                                    <FieldLabel htmlFor="gridRadius">
+                                        Radius
+                                    </FieldLabel>
                                     <Input
                                         id="gridRadius"
                                         type="number"
@@ -143,7 +152,10 @@ export default function SettingsComponent(
                                     />
                                 </div>
                                 <FieldError>
-                                    {form.formState.errors.gridFutureSteps?.message}
+                                    {
+                                        form.formState.errors.gridFutureSteps
+                                            ?.message
+                                    }
                                 </FieldError>
                             </Field>
                         </FieldSet>
