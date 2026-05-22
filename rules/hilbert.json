@@ -1,0 +1,3007 @@
+{
+  "version": "1",
+  "size": [
+    32,
+    32
+  ],
+  "signals": {
+    "0,0": [
+      "input_B",
+      "wire_out_UP"
+    ],
+    "0,1": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "1,1": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "1,2": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "0,2": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "0,3": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "1,3": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "2,3": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "2,2": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "3,2": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "3,3": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "3,4": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "3,5": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "2,5": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "2,4": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "1,4": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_LEFT"
+    ],
+    "0,4": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "0,5": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "1,5": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "1,6": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "0,6": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "0,7": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "1,7": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "2,7": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "2,6": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "3,6": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "3,7": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "4,7": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "5,7": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "5,6": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "4,6": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "4,5": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_DOWN"
+    ],
+    "4,4": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "5,4": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "5,5": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "6,5": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "6,4": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "7,4": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "7,5": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "7,6": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "6,6": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "6,7": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "7,7": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "7,8": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "6,8": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "6,9": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "7,9": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "7,10": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "7,11": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "6,11": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "6,10": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "5,10": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "5,11": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "4,11": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "4,10": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_DOWN"
+    ],
+    "4,9": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "5,9": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "5,8": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "4,8": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_LEFT"
+    ],
+    "3,8": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "3,9": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "2,9": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "2,8": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "1,8": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_LEFT"
+    ],
+    "0,8": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "0,9": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "1,9": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "1,10": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "0,10": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "0,11": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "1,11": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "2,11": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "2,10": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "3,10": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "3,11": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "3,12": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "3,13": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "2,13": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "2,12": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "1,12": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_LEFT"
+    ],
+    "0,12": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "0,13": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "1,13": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "1,14": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "0,14": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "0,15": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "1,15": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "2,15": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "2,14": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "3,14": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "3,15": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "4,15": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "5,15": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "5,14": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "4,14": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "4,13": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_DOWN"
+    ],
+    "4,12": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "5,12": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "5,13": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "6,13": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "6,12": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "7,12": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "7,13": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "7,14": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "6,14": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "6,15": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "7,15": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "8,15": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "8,14": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "9,14": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "9,15": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "10,15": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "11,15": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "11,14": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "10,14": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "10,13": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "11,13": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "11,12": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "10,12": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_LEFT"
+    ],
+    "9,12": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "9,13": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "8,13": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "8,12": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_DOWN"
+    ],
+    "8,11": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "9,11": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "9,10": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "8,10": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "8,9": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_DOWN"
+    ],
+    "8,8": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "9,8": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "9,9": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "10,9": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "10,8": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "11,8": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "11,9": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "11,10": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "10,10": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "10,11": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "11,11": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "12,11": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "13,11": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "13,10": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "12,10": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "12,9": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_DOWN"
+    ],
+    "12,8": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "13,8": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "13,9": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "14,9": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "14,8": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "15,8": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "15,9": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "15,10": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "14,10": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "14,11": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "15,11": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "15,12": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "15,13": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "14,13": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "14,12": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "13,12": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_LEFT"
+    ],
+    "12,12": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "12,13": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "13,13": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "13,14": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "12,14": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "12,15": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "13,15": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "14,15": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "14,14": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "15,14": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "15,15": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "15,16": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "15,17": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "14,17": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "14,16": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "13,16": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_LEFT"
+    ],
+    "12,16": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "12,17": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "13,17": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "13,18": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "12,18": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "12,19": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "13,19": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "14,19": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "14,18": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "15,18": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "15,19": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "15,20": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "14,20": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "14,21": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "15,21": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "15,22": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "15,23": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "14,23": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "14,22": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "13,22": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "13,23": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "12,23": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "12,22": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_DOWN"
+    ],
+    "12,21": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "13,21": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "13,20": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "12,20": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_LEFT"
+    ],
+    "11,20": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_LEFT"
+    ],
+    "10,20": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "10,21": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "11,21": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "11,22": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "11,23": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "10,23": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "10,22": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "9,22": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "9,23": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "8,23": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "8,22": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_DOWN"
+    ],
+    "8,21": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "9,21": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "9,20": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "8,20": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "8,19": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_DOWN"
+    ],
+    "8,18": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "9,18": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "9,19": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "10,19": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "11,19": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "11,18": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "10,18": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "10,17": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "11,17": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "11,16": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "10,16": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_LEFT"
+    ],
+    "9,16": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "9,17": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "8,17": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "8,16": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "7,16": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_LEFT"
+    ],
+    "6,16": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "6,17": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "7,17": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "7,18": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "7,19": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "6,19": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "6,18": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "5,18": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "5,19": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "4,19": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "4,18": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_DOWN"
+    ],
+    "4,17": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "5,17": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "5,16": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "4,16": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_LEFT"
+    ],
+    "3,16": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "3,17": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "2,17": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "2,16": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "1,16": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_LEFT"
+    ],
+    "0,16": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "0,17": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "1,17": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "1,18": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "0,18": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "0,19": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "1,19": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "2,19": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "2,18": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "3,18": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "3,19": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "3,20": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "3,21": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "2,21": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "2,20": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "1,20": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_LEFT"
+    ],
+    "0,20": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "0,21": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "1,21": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "1,22": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "0,22": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "0,23": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "1,23": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "2,23": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "2,22": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "3,22": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "3,23": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "4,23": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "5,23": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "5,22": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "4,22": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "4,21": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_DOWN"
+    ],
+    "4,20": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "5,20": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "5,21": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "6,21": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "6,20": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "7,20": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "7,21": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "7,22": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "6,22": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "6,23": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "7,23": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "7,24": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "6,24": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "6,25": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "7,25": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "7,26": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "7,27": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "6,27": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "6,26": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "5,26": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "5,27": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "4,27": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "4,26": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_DOWN"
+    ],
+    "4,25": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "5,25": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "5,24": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "4,24": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_LEFT"
+    ],
+    "3,24": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "3,25": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "2,25": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "2,24": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "1,24": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_LEFT"
+    ],
+    "0,24": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "0,25": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "1,25": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "1,26": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "0,26": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "0,27": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "1,27": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "2,27": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "2,26": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "3,26": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "3,27": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "3,28": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "3,29": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "2,29": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "2,28": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "1,28": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_LEFT"
+    ],
+    "0,28": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "0,29": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "1,29": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "1,30": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "0,30": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "0,31": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "1,31": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "2,31": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "2,30": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "3,30": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "3,31": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "4,31": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "5,31": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "5,30": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "4,30": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "4,29": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_DOWN"
+    ],
+    "4,28": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "5,28": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "5,29": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "6,29": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "6,28": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "7,28": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "7,29": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "7,30": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "6,30": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "6,31": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "7,31": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "8,31": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "8,30": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "9,30": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "9,31": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "10,31": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "11,31": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "11,30": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "10,30": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "10,29": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "11,29": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "11,28": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "10,28": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_LEFT"
+    ],
+    "9,28": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "9,29": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "8,29": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "8,28": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_DOWN"
+    ],
+    "8,27": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "9,27": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "9,26": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "8,26": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "8,25": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_DOWN"
+    ],
+    "8,24": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "9,24": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "9,25": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "10,25": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "10,24": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "11,24": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "11,25": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "11,26": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "10,26": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "10,27": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "11,27": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "12,27": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "13,27": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "13,26": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "12,26": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "12,25": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_DOWN"
+    ],
+    "12,24": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "13,24": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "13,25": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "14,25": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "14,24": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "15,24": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "15,25": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "15,26": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "14,26": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "14,27": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "15,27": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "15,28": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "15,29": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "14,29": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "14,28": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "13,28": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_LEFT"
+    ],
+    "12,28": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "12,29": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "13,29": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "13,30": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "12,30": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "12,31": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "13,31": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "14,31": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "14,30": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "15,30": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "15,31": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "16,31": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "17,31": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "17,30": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "16,30": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "16,29": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_DOWN"
+    ],
+    "16,28": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "17,28": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "17,29": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "18,29": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "18,28": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "19,28": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "19,29": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "19,30": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "18,30": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "18,31": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "19,31": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "20,31": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "20,30": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "21,30": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "21,31": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "22,31": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "23,31": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "23,30": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "22,30": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "22,29": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "23,29": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "23,28": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "22,28": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_LEFT"
+    ],
+    "21,28": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "21,29": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "20,29": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "20,28": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_DOWN"
+    ],
+    "20,27": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_DOWN"
+    ],
+    "20,26": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "21,26": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "21,27": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "22,27": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "23,27": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "23,26": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "22,26": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "22,25": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "23,25": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "23,24": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "22,24": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_LEFT"
+    ],
+    "21,24": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "21,25": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "20,25": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "20,24": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "19,24": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_LEFT"
+    ],
+    "18,24": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "18,25": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "19,25": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "19,26": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "19,27": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "18,27": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "18,26": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "17,26": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "17,27": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "16,27": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "16,26": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_DOWN"
+    ],
+    "16,25": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "17,25": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "17,24": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "16,24": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "16,23": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_DOWN"
+    ],
+    "16,22": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "17,22": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "17,23": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "18,23": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "19,23": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "19,22": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "18,22": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "18,21": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "19,21": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "19,20": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "18,20": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_LEFT"
+    ],
+    "17,20": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "17,21": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "16,21": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "16,20": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_DOWN"
+    ],
+    "16,19": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "17,19": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "17,18": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "16,18": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "16,17": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_DOWN"
+    ],
+    "16,16": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "17,16": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "17,17": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "18,17": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "18,16": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "19,16": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "19,17": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "19,18": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "18,18": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "18,19": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "19,19": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "20,19": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "21,19": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "21,18": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "20,18": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "20,17": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_DOWN"
+    ],
+    "20,16": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "21,16": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "21,17": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "22,17": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "22,16": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "23,16": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "23,17": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "23,18": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "22,18": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "22,19": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "23,19": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "23,20": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "23,21": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "22,21": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "22,20": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "21,20": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_LEFT"
+    ],
+    "20,20": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "20,21": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "21,21": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "21,22": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "20,22": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "20,23": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "21,23": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "22,23": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "22,22": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "23,22": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "23,23": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "24,23": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "24,22": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "25,22": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "25,23": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "26,23": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "27,23": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "27,22": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "26,22": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "26,21": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "27,21": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "27,20": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "26,20": [
+      "input_A",
+      "wire_in_LEFT",
+      "wire_out_LEFT"
+    ],
+    "25,20": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "25,21": [
+      "input_A",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "24,21": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "24,20": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_DOWN"
+    ],
+    "24,19": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "25,19": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "25,18": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "24,18": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "24,17": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_DOWN"
+    ],
+    "24,16": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "25,16": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "25,17": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "26,17": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "26,16": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "27,16": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "27,17": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "27,18": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_LEFT"
+    ],
+    "26,18": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_UP"
+    ],
+    "26,19": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "27,19": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "28,19": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_RIGHT"
+    ],
+    "29,19": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "29,18": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_LEFT"
+    ],
+    "28,18": [
+      "input_B",
+      "wire_in_LEFT",
+      "wire_out_DOWN"
+    ],
+    "28,17": [
+      "input_B",
+      "wire_in_DOWN",
+      "wire_out_DOWN"
+    ],
+    "28,16": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "29,16": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "29,17": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_RIGHT"
+    ],
+    "30,17": [
+      "input_B",
+      "wire_in_RIGHT",
+      "wire_out_DOWN"
+    ],
+    "30,16": [
+      "input_A",
+      "wire_in_DOWN",
+      "wire_out_RIGHT"
+    ],
+    "31,16": [
+      "input_A",
+      "wire_in_RIGHT",
+      "wire_out_UP"
+    ],
+    "31,17": [
+      "input_B",
+      "wire_in_UP",
+      "wire_out_UP"
+    ],
+    "31,18": [
+      "input_B",
+      "wire_in_UP"
+    ]
+  }
+}
