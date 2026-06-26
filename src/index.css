@@ -45,3 +45,14 @@
 }
 
 @import "./theme.scss";
+
+.graph-flow-no-handles .react-flow__handle {
+  opacity: 0;
+  pointer-events: none;
+  width: 1px;
+  height: 1px;
+  min-width: 1px;
+  min-height: 1px;
+  border: none;
+  background: transparent;
+}

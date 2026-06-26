@@ -30,9 +30,27 @@ export default class DirectedGraph<T> {
         return this.reverseEdges.get(vertex)!;
     }
 
-    getStronglyConnectedComponents(): Set<Set<T>> {
+    getVertices(): Set<T> {
+        return new Set(this.vertices);
+    }
+
+    getEdges(): Array<[T, T]> {
+        const edgeList: Array<[T, T]> = [];
+        for (const source of this.vertices) {
+            for (const target of this.getSuccessors(source)) {
+                edgeList.push([source, target]);
+            }
+        }
+        return edgeList;
+    }
+
+    private computeStronglyConnectedComponents(): {
+        components: Set<Set<T>>,
+        componentOfVertex: Map<T, Set<T>>,
+    } {
         const stack: T[] = [];
         const components: Set<Set<T>> = new Set();
+        const componentOfVertex = new Map<T, Set<T>>();
         
         const unvisitedVertices = new Set(this.vertices);
         const visit = (u: T) => {
@@ -52,6 +70,7 @@ export default class DirectedGraph<T> {
         const assign = (u: T, component: Set<T>) => {
             if (unassignedVertices.has(u)) {
                 component.add(u);
+                componentOfVertex.set(u, component);
                 unassignedVertices.delete(u);
                 for (const v of this.getPredecessors(u)) {
                     assign(v, component);
@@ -65,6 +84,29 @@ export default class DirectedGraph<T> {
                 assign(u, component);
             }
         }
+        return { components, componentOfVertex };
+    }
+
+    getStronglyConnectedComponents(): Set<Set<T>> {
+        const { components } = this.computeStronglyConnectedComponents();
         return components;
+    }
+
+    getGraphOfStronglyConnectedComponents(): DirectedGraph<Set<T>> {
+        const { components, componentOfVertex } = this.computeStronglyConnectedComponents();
+        const componentGraph = new DirectedGraph<Set<T>>();
+        for (const component of components) {
+            componentGraph.addVertex(component);
+        }
+        for (const vertex of this.vertices) {
+            const component = componentOfVertex.get(vertex)!;
+            for (const successor of this.getSuccessors(vertex)) {
+                const successorComponent = componentOfVertex.get(successor)!;
+                if (successorComponent !== component) {
+                    componentGraph.addEdge(component, successorComponent);
+                }
+            }
+        }
+        return componentGraph;
     }
 }

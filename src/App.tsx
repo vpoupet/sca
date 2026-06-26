@@ -11,6 +11,7 @@ import Vector from "./classes/Vector";
 import Diagram1D from "./components/Diagram1D";
 import Diagram2D from "./components/Diagram2D";
 import EditGrid from "./components/EditGrid";
+import DependencyGraphsDialogs from "./components/DependencyGraphsDialogs";
 import RuleInputArea from "./components/RuleInputArea";
 import RulesList from "./components/RulesList";
 import SettingsComponent from "./components/SettingsComponent";
@@ -147,6 +148,7 @@ export default function App() {
         <div className="flex flex-col w-screen min-h-screen p-2 text-gray-700 bg-linear-to-b from-slate-50 to-slate-100">
             <Heading level={1}>Signal-based cellular automata</Heading>
             <SettingsComponent settings={settings} setSettings={setSettings} />
+            <DependencyGraphsDialogs automaton={automaton} />
             <SignalsList
                 automaton={automaton}
                 setAutomaton={setAutomaton}

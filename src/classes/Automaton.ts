@@ -162,7 +162,22 @@ export default class Automaton {
      * @returns a new Automaton with the added rules
      */
     addRulesFromString(inputString: string): Automaton {
-        let context = new EvalContext(new Map(this.multiSignals));
+        return Automaton.newFromString(
+            inputString,
+            this.rules,
+            this.multiSignals
+        );
+    }
+
+    /**
+     * Adds rules to the automaton from a string describing the rules.
+     * The string is parsed with the grammar defined in grammar.ne
+     *
+     * @param inputString a string describing the rules to add to the automaton
+     * @returns a new Automaton with the added rules
+     */
+    static newFromString(inputString: string, prevRules: Rule[] = [], multiSignals: Map<Signal, Set<Signal>> = new Map()): Automaton {
+        let context = new EvalContext(new Map(multiSignals));
         const parser = new nearley.Parser(
             nearley.Grammar.fromCompiled(grammar)
         );
@@ -268,11 +283,7 @@ export default class Automaton {
             throw new Error("Function not closed");
         }
 
-        if (rules.length === 0) {
-            return this;
-        }
-
-        return new Automaton([...this.rules, ...rules], context.multiSignals);
+        return new Automaton([...prevRules, ...rules], context.multiSignals);
     }
 
     /**
