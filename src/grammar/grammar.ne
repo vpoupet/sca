@@ -112,9 +112,6 @@ SIGNAL_NAME -> IDENTIFIER {% id %}
 LITERAL -> POSITION_LIST "." "!":? SIGNAL_NAME
    {% ([coords, , bang, s]) =>
         new Literal(Symbol.for(s), new Vector(coords), bang ? false : true) %}
-LITERAL -> "!" SIGNAL_NAME
-   {% ([, s]) =>
-        new Literal(Symbol.for(s), new Vector(), false) %}
 LITERAL -> SIGNAL_NAME
    {% ([s]) =>
         new Literal(Symbol.for(s), new Vector(), true) %}

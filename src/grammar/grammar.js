@@ -133,8 +133,6 @@ let ParserRules = [
     {"name": "LITERAL$ebnf$1", "symbols": [], "postprocess": function(d) {return null;}},
     {"name": "LITERAL", "symbols": ["POSITION_LIST", {"literal":"."}, "LITERAL$ebnf$1", "SIGNAL_NAME"], "postprocess":  ([coords, , bang, s]) =>
         new Literal(Symbol.for(s), new Vector(coords), bang ? false : true) },
-    {"name": "LITERAL", "symbols": [{"literal":"!"}, "SIGNAL_NAME"], "postprocess":  ([, s]) =>
-        new Literal(Symbol.for(s), new Vector(), false) },
     {"name": "LITERAL", "symbols": ["SIGNAL_NAME"], "postprocess":  ([s]) =>
         new Literal(Symbol.for(s), new Vector(), true) },
     {"name": "OUTPUT", "symbols": ["SIGNAL_NAME"], "postprocess": ([s]) => new RuleOutput(new Vector([]), Symbol.for(s), 1)},

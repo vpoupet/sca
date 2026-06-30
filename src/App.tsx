@@ -10,7 +10,6 @@ import RuleGrid from "./classes/RuleGrid";
 import Vector from "./classes/Vector";
 import Diagram1D from "./components/Diagram1D";
 import Diagram2D from "./components/Diagram2D";
-import EditGrid from "./components/EditGrid";
 import DependencyGraphsDialogs from "./components/DependencyGraphsDialogs";
 import RuleInputArea from "./components/RuleInputArea";
 import RulesList from "./components/RulesList";
@@ -19,7 +18,7 @@ import SignalsList from "./components/SignalsList";
 import Heading from "./components/Typography";
 import "./style/Cell.scss";
 import { randomColor } from "./style/materialColors";
-import type { SettingsType, Signal, Site } from "./types";
+import type { SettingsType, Signal } from "./types";
 import SetInitialConfigurationButton from "./components/SetInitialConfigurationButton";
 
 const defaultSettings: SettingsType = {
@@ -40,8 +39,6 @@ export default function App() {
     const [grid, setGrid] = useState<RuleGrid>(
         RuleGrid.withSize(settings.gridRadius, settings.gridFutureSteps)
     );
-    const [activeInputCells, setActiveInputCells] = useState<Vector[]>([]);
-    const [activeOutputCells, setActiveOutputCells] = useState<Site[]>([]);
     const [hiddenSignalsSet, setHiddenSignalsSet] = useState<Set<Signal>>(
         new Set()
     );
@@ -163,19 +160,6 @@ export default function App() {
                 setSignalColor={setSignalColor}
             />
             <div className="flex gap-4">
-                <EditGrid
-                    grid={grid}
-                    setGrid={setGrid}
-                    settings={settings}
-                    automaton={automaton}
-                    setAutomaton={setAutomaton}
-                    extraSignalsSet={extraSignalsSet}
-                    activeInputCells={activeInputCells}
-                    setActiveInputCells={setActiveInputCells}
-                    activeOutputCells={activeOutputCells}
-                    setActiveOutputCells={setActiveOutputCells}
-                    colorMap={colorMap}
-                />
                 <div className="flex flex-col gap-1">
                     <RuleInputArea
                         automaton={automataHistory[automatonIndex]}

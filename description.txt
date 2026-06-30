@@ -1,0 +1,28 @@
+I am working on a new representation of cellular automata (1D or 2D). The idea is that instead of considering a finite set of states and having each cell in exactly one state, I consider a finite set of "signals" and consider that a cell has a subset of signals (possibly empty).
+
+From there, the most interesting idea is that the local rule of the automaton can now be described as a list of rules (or set of rules because the order doesn't matter). Each rule has a condition and a list of outputs. The condition is a boolean formula on literals that describe whether a given signal is or isn't on the considered cell or one of its neighbors (for instance "c has signal s1 and c+1 doesn't have signal s2"). The productions are signals sent to one of the neighbors of the considered cell (or the cell itself).
+
+A rule could for instance be :
+If the current cell has signal s1 and either its left neighbor (c-1) has signal s2 or its right neighbor (c+1) doesn't have signal s3, then c receives s4 and (c+1) receives s5.
+
+The image of a configuration (function that maps each cell to a set of signals it contains) is then obtained by applying all rules on each cell : if the condition of a rule is true on the cell, the signals described by the productions of the rule are added to the corresponding neighbors in the image (signals that were on the cell in the initial configuration are not kept by the cell, unless a rule puts them back).
+
+I have already written a simulator for this kind of automaton with a specific syntax for the rules. Here is an example :
+Axis_H: 1,0.Axis_H
+Floor_H:
+    !Bounce_H: 1,0.Floor_H
+    Bounce_H: 1,1.Floor_H
+Bounce_H:
+    !Floor_H: 1,1.Bounce_H
+    Floor_H: 1,1.Down_H
+(Down_H !Axis_H): 1,-1.Down_H
+(Down_H Axis_H): 1,1.Bounce_H
+
+x,y.Signame represents the signal Signame on the cell c + (x, y) (here the example is for a 2D cellular automaton). When the coordinates x,y are 0,0 they can be omitted ("0,0.Signame" is the same as "Signame"). Negation is represented by an exclamation mark, conjunctions (and) with parenthesis and disjunctions (or) with square brackets. For example
+[sig1 (sig2 !1,1.sig3)]
+means "either the cell has sig1 or the cell has sig2 but it's 1,1 neighbor doesn't have sig3
+
+Also, when a line is indented under a condition, the new line is only executed if the previous level of condition is true (it is a form of conjunction, but sometimes simpler to organize).
+
+
+Do you understand how this syntax works ?
