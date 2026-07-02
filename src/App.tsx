@@ -20,11 +20,11 @@ import "./style/Cell.scss";
 import { randomColor } from "./style/materialColors";
 import type { SettingsType, Signal } from "./types";
 import SetInitialConfigurationButton from "./components/SetInitialConfigurationButton";
+import EditGrid from "./components/EditGrid";
 
 const defaultSettings: SettingsType = {
-    dimension: 2,
+    dimension: 1,
     gridRadius: 2,
-    gridFutureSteps: 3,
     nbCells: 20,
     nbSteps: 20,
     timeGoesUp: true,
@@ -36,11 +36,16 @@ export default function App() {
         Signal | undefined
     >(undefined);
     const [colorMap, setColorMap] = useState(new Map<Signal, string>());
+    const dim = settings.dimension;
+    const v = Vector.one(dim).mult(settings.gridRadius);
     const [grid, setGrid] = useState<RuleGrid>(
-        RuleGrid.withSize(settings.gridRadius, settings.gridFutureSteps)
+        RuleGrid.withBounds(v.negated(), v, dim),
     );
+    const [activeInputCells, setActiveInputCells] = useState<Vector[]>([]);
+    const [activeOutputCells, setActiveOutputCells] = useState<Vector[]>([]);
+
     const [hiddenSignalsSet, setHiddenSignalsSet] = useState<Set<Signal>>(
-        new Set()
+        new Set(),
     );
     const [automataHistory, setAutomataHistory] = useState<Automaton[]>([
         new Automaton(),
@@ -48,16 +53,16 @@ export default function App() {
     const [automatonIndex, setAutomatonIndex] = useState(0);
 
     const [extraSignalsSet, setExtraSignalsSet] = useState<Set<Signal>>(
-        new Set([Symbol.for("Init")])
+        new Set([Symbol.for("Init")]),
     );
 
     function makeInitialConfiguration(
         dimension: number,
-        nbCells: number
+        nbCells: number,
     ): Configuration {
         if (dimension === 2) {
             const config = Configuration2D.withSize(
-                new Vector([nbCells, nbCells])
+                new Vector([nbCells, nbCells]),
             );
             config.getCellAt(new Vector())?.addSignal(Symbol.for("Init"));
             return config;
@@ -83,7 +88,7 @@ export default function App() {
     const automaton = automataHistory[automatonIndex];
 
     const signalsList = Array.from(
-        automaton.signals.union(extraSignalsSet)
+        automaton.signals.union(extraSignalsSet),
     ).sort((a, b) => {
         const descA = a.description || "";
         const descB = b.description || "";
@@ -91,7 +96,7 @@ export default function App() {
     });
 
     const uncoloredSignals = signalsList.filter(
-        (signal) => !colorMap.has(signal)
+        (signal) => !colorMap.has(signal),
     );
     if (uncoloredSignals.length > 0) {
         const newColorMap = new Map(colorMap);
@@ -160,6 +165,19 @@ export default function App() {
                 setSignalColor={setSignalColor}
             />
             <div className="flex gap-4">
+                <EditGrid
+                    grid={grid}
+                    setGrid={setGrid}
+                    settings={settings}
+                    automaton={automaton}
+                    setAutomaton={setAutomaton}
+                    extraSignalsSet={extraSignalsSet}
+                    activeInputCells={activeInputCells}
+                    setActiveInputCells={setActiveInputCells}
+                    activeOutputCells={activeOutputCells}
+                    setActiveOutputCells={setActiveOutputCells}
+                    colorMap={colorMap}
+                />
                 <div className="flex flex-col gap-1">
                     <RuleInputArea
                         automaton={automataHistory[automatonIndex]}

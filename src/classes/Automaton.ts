@@ -1,11 +1,7 @@
 import nearley from "nearley";
 import grammar from "../grammar/grammar.js";
 import type { ParsedLine } from "../grammar/types.ts";
-import type {
-    ExtendedConfiguration,
-    IndexedConfiguration,
-    Signal,
-} from "../types.ts";
+import type { IndexedConfiguration, Signal } from "../types.ts";
 import Clause, { Conjunction, EvalContext } from "./Clause.ts";
 import { Configuration } from "./Configuration.ts";
 import DirectedGraph from "./Graph.ts";
@@ -27,6 +23,8 @@ export default class Automaton {
      * (the rules are executed on each cell in the order they appear in the list)
      */
     rules: Rule[];
+
+    instantRules: Rule[];
     /**
      * List of strings representing the rules. Used to avoid duplicate rules.
      */
@@ -39,18 +37,13 @@ export default class Automaton {
      * Position of the rightmost neighbor used in the rules
      */
     maxNeighbor: Vector;
-    /**
-     * Number of steps that are computed ahead of time. This is 1 by default but if some rules affect times further
-     * down (e.g. a 0/2 rule will add a signal to the cell two steps ahead) it is necessary to start preparing the
-     * configuration at time (t + maxFutureSteps) when applying the rules to the configuration at time t.
-     */
-    maxFutureDepth: number;
 
     constructor(
         rules: Rule[] = [],
-        multiSignals: Map<Signal, Set<Signal>> = new Map()
+        multiSignals: Map<Signal, Set<Signal>> = new Map(),
     ) {
         this.rules = [];
+        this.instantRules = [];
         this.ruleNames = new Set();
         for (const rule of rules) {
             if (rule.condition.isAlwaysFalse()) {
@@ -95,24 +88,17 @@ export default class Automaton {
         this.signals = new Set();
         this.minNeighbor = new Vector();
         this.maxNeighbor = new Vector();
-        this.maxFutureDepth = 1;
 
-        // parse rules to update signals, minNeighbor, maxNeighbor and maxFutureDepth
+        // parse rules to update signals, minNeighbor and maxNeighbor
         for (const rule of this.rules) {
-            for (const output of rule.outputs) {
-                this.maxFutureDepth = Math.max(
-                    this.maxFutureDepth,
-                    output.futureStep
-                );
-            }
             for (const literal of rule.condition.getLiterals()) {
                 this.minNeighbor = Vector.min(
                     this.minNeighbor,
-                    literal.position
+                    literal.position,
                 );
                 this.maxNeighbor = Vector.max(
                     this.maxNeighbor,
-                    literal.position
+                    literal.position,
                 );
             }
 
@@ -165,7 +151,7 @@ export default class Automaton {
         return Automaton.newFromString(
             inputString,
             this.rules,
-            this.multiSignals
+            this.multiSignals,
         );
     }
 
@@ -176,10 +162,14 @@ export default class Automaton {
      * @param inputString a string describing the rules to add to the automaton
      * @returns a new Automaton with the added rules
      */
-    static newFromString(inputString: string, prevRules: Rule[] = [], multiSignals: Map<Signal, Set<Signal>> = new Map()): Automaton {
+    static newFromString(
+        inputString: string,
+        prevRules: Rule[] = [],
+        multiSignals: Map<Signal, Set<Signal>> = new Map(),
+    ): Automaton {
         let context = new EvalContext(new Map(multiSignals));
         const parser = new nearley.Parser(
-            nearley.Grammar.fromCompiled(grammar)
+            nearley.Grammar.fromCompiled(grammar),
         );
         try {
             parser.feed(inputString);
@@ -255,11 +245,11 @@ export default class Automaton {
                         throw new Error("Not currently in a function");
                     }
                     const transformation = transformations.get(
-                        functionData.name
+                        functionData.name,
                     );
                     if (transformation === undefined) {
                         throw new Error(
-                            `Unknown transformation: ${functionData.name}`
+                            `Unknown transformation: ${functionData.name}`,
                         );
                     }
 
@@ -318,7 +308,7 @@ export default class Automaton {
     deleteRule(rule: Rule): Automaton {
         return new Automaton(
             this.rules.filter((r) => r !== rule),
-            this.multiSignals
+            this.multiSignals,
         );
     }
 
@@ -351,26 +341,23 @@ export default class Automaton {
         return Math.max(...this.rules.map((rule) => rule.getDimension()), 0);
     }
 
-    applyRules(configuration: ExtendedConfiguration): ExtendedConfiguration {
-        const outputConfiguration = configuration
-            .slice(1, this.maxFutureDepth)
-            .map((config) => config.clone());
-        for (let i = outputConfiguration.length; i < this.maxFutureDepth; i++) {
-            outputConfiguration.push(
-                Configuration.withSize(configuration[0].getSize())
-            );
-        }
+    applyRules(config: Configuration): Configuration {
+        const inputConfiguration = config.clone();
+        const outputConfiguration = Configuration.withSize(
+            inputConfiguration.getSize(),
+        );
+
         const evalContext = this.getEvalContext();
-        for (const c of configuration[0].iterWithNeighborhood(
+        for (const c of inputConfiguration.iterPositionsWithNeighborhood(
             this.minNeighbor,
-            this.maxNeighbor
+            this.maxNeighbor,
         )) {
             for (const rule of this.rules) {
-                if (rule.condition.eval(configuration[0], c, evalContext)) {
+                if (rule.condition.eval(inputConfiguration, c, evalContext)) {
                     rule.outputs.forEach((output) => {
-                        outputConfiguration[output.futureStep - 1].addSignalAt(
+                        outputConfiguration.addSignalAt(
                             Vector.add(c, output.position),
-                            output.signal
+                            output.signal,
                         );
                     });
                 }
@@ -381,7 +368,7 @@ export default class Automaton {
 
     getHistoryAtTime(
         time: number,
-        history: IndexedConfiguration[]
+        history: IndexedConfiguration[],
     ): IndexedConfiguration[] {
         let i = history.length - 1;
         while (history[i].time > time) {
@@ -393,14 +380,17 @@ export default class Automaton {
             lastIndexedConfiguration = {
                 time: lastIndexedConfiguration.time + 1,
                 configuration: this.applyRules(
-                    lastIndexedConfiguration.configuration
+                    lastIndexedConfiguration.configuration,
                 ),
             };
             newHistory.push(lastIndexedConfiguration);
         }
         // reduce history size
         for (let i = newHistory.length - 1; i >= 2; i--) {
-            if (2 * (time - newHistory[i].time) >= time - newHistory[i - 2].time) {
+            if (
+                2 * (time - newHistory[i].time) >=
+                time - newHistory[i - 2].time
+            ) {
                 // remove newHistory[i - 1]
                 newHistory.splice(i - 1, 1);
             }
@@ -409,7 +399,7 @@ export default class Automaton {
     }
 
     static reduceHistory(
-        history: IndexedConfiguration[]
+        history: IndexedConfiguration[],
     ): IndexedConfiguration[] {
         const t0 = history.at(-1)!.time;
         let i = history.length - 1;
@@ -424,40 +414,6 @@ export default class Automaton {
     }
 
     /**
-     * Applies the rules of the automaton on a given configuration in a portion of a space-time diagram.
-     * The rules are executed on each cell of the diagram's configuration referenced by the `time` parameter.
-     *
-     * All resulting outputs that fit inside the diagram are added to the corresponding future configurations.
-     * Outputs that would go beyond the provided diagram are ignored.
-     *
-     * @param diagram an array of configurations representing a portion of a space-time diagramto which the rules
-     * should be applied (the rule is applied to the first configuration, but the other configurations might contain
-     * already pre-computed future steps)
-     * @param time the time index of the configuration in the diagram on which to apply the rules
-     */
-    applyRulesOnDiagram(diagram: Configuration[], time: number = 0) {
-        const configuration = diagram[time];
-        const evalContext = this.getEvalContext();
-        for (const c of configuration.iterWithNeighborhood(
-            this.minNeighbor,
-            this.maxNeighbor
-        )) {
-            for (const rule of this.rules) {
-                if (rule.condition.eval(configuration, c, evalContext)) {
-                    rule.outputs.forEach((output) => {
-                        if (time + output.futureStep < diagram.length) {
-                            diagram[time + output.futureStep].addSignalAt(
-                                Vector.add(c, output.position),
-                                output.signal
-                            );
-                        }
-                    });
-                }
-            }
-        }
-    }
-
-    /**
      * Generates a space-time diagram of the automaton starting from the given configuration
      *
      * @param initialConfiguration the initial configuration
@@ -466,23 +422,19 @@ export default class Automaton {
      */
     makeDiagram(
         initialConfiguration: Configuration,
-        nbSteps: number
+        nbSteps: number,
     ): Configuration[] {
-        const diagram = [
-            initialConfiguration.clone(),
-            ...Array.from({ length: nbSteps }, () =>
-                Configuration.withSize(initialConfiguration.getSize())
-            ),
-        ];
+        const diagram = [];
+        diagram.push(initialConfiguration.clone());
         for (let t = 0; t < nbSteps; t++) {
-            this.applyRulesOnDiagram(diagram, t);
+            diagram.push(this.applyRules(diagram[t]));
         }
         return diagram;
     }
 
     replaceSignal(oldSignal: Signal, newSignal: Signal): Automaton {
         const newRules = this.rules.map((rule) =>
-            rule.replaceSignal(oldSignal, newSignal)
+            rule.replaceSignal(oldSignal, newSignal),
         );
         const newMultiSignals = new Map(this.multiSignals);
         if (newMultiSignals.has(oldSignal)) {
@@ -510,7 +462,7 @@ export default class Automaton {
         for (const rule of this.rules) {
             for (const inputLiteral of rule.condition.getLiterals()) {
                 for (const inputSignal of evalContext.getSignalsFor(
-                    inputLiteral.signal
+                    inputLiteral.signal,
                 )) {
                     for (const output of rule.outputs) {
                         graph.addEdge(inputSignal, output.signal);

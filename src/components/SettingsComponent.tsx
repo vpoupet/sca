@@ -135,29 +135,6 @@ export default function SettingsComponent(
                                     {form.formState.errors.gridRadius?.message}
                                 </FieldError>
                             </Field>
-                            <Field>
-                                <div className="flex gap-4">
-                                    <FieldLabel htmlFor="gridFutureSteps">
-                                        Nb Future Steps
-                                    </FieldLabel>
-                                    <Input
-                                        id="gridFutureSteps"
-                                        type="number"
-                                        min={1}
-                                        max={10}
-                                        {...form.register("gridFutureSteps", {
-                                            valueAsNumber: true,
-                                        })}
-                                        className="w-24"
-                                    />
-                                </div>
-                                <FieldError>
-                                    {
-                                        form.formState.errors.gridFutureSteps
-                                            ?.message
-                                    }
-                                </FieldError>
-                            </Field>
                         </FieldSet>
                         <FieldSeparator />
                         {/* Diagram */}

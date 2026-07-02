@@ -60,7 +60,7 @@ export function DiagramRow({
 }: DiagramRowProps) {
     return (
         <div className="flex flex-row w-full">
-            {[...config.iter()].map((c) => {
+            {[...config.iterPositions()].map((c) => {
                 const cell = config.getCellAt(c);
                 return (
                     <CellComponent

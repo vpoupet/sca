@@ -15,7 +15,7 @@ export function Config1DComponent({
 }: Props) {
     return (
         <div className="flex flex-row w-full">
-            {[...config.iter()].map((c) => {
+            {[...config.iterPositions()].map((c) => {
                 const cell = config.getCellAt(c);
                 return (
                     <CellComponent

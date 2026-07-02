@@ -1,11 +1,10 @@
 import { Eraser } from "lucide-react";
 import Automaton from "../classes/Automaton.ts";
 import Cell from "../classes/Cell.ts";
-import { Configuration1D } from "../classes/Configuration.ts";
 import RuleGrid from "../classes/RuleGrid.ts";
 import Vector from "../classes/Vector.ts";
 import "../style/Cell.scss";
-import type { SettingsType, Signal, Site } from "../types.ts";
+import type { SettingsType, Signal } from "../types.ts";
 import GridComponent from "./GridComponent.tsx";
 import GridSignalsManager from "./GridSignalsManager.tsx";
 import { Button } from "./ui/button.tsx";
@@ -19,8 +18,8 @@ type EditGridProps = {
     extraSignalsSet: Set<Signal>;
     activeInputCells: Vector[];
     setActiveInputCells: (activeInputCells: Vector[]) => void;
-    activeOutputCells: Site[];
-    setActiveOutputCells: (activeOutputCells: Site[]) => void;
+    activeOutputCells: Vector[];
+    setActiveOutputCells: (activeOutputCells: Vector[]) => void;
     colorMap: Map<Signal, string>;
 };
 
@@ -38,6 +37,7 @@ export default function EditGrid(props: EditGridProps) {
         setActiveOutputCells,
         colorMap,
     } = props;
+    const dim = settings.dimension;
     const signalsList = automaton.getSignalsList(extraSignalsSet);
 
     function applyToActiveCells(f: (cell: Cell) => void) {
@@ -48,8 +48,8 @@ export default function EditGrid(props: EditGridProps) {
                 f(cell);
             }
         });
-        activeOutputCells.forEach(({ pos, time }) => {
-            const cell = newGrid.outputCells[time].getCellAt(pos);
+        activeOutputCells.forEach((pos) => {
+            const cell = newGrid.outputCells.getCellAt(pos);
             if (cell) {
                 f(cell);
             }
@@ -58,27 +58,21 @@ export default function EditGrid(props: EditGridProps) {
     }
 
     function clearGrid() {
-        const newGrid = RuleGrid.withSize(
-            settings.gridRadius,
-            settings.gridFutureSteps
-        );
+        const v = Vector.one(dim).mult(settings.gridRadius);
+        const newGrid = RuleGrid.withBounds(v.negated(), v, dim);
         setGrid(newGrid);
     }
 
     function clearInputs() {
-        const newGrid = RuleGrid.withSize(
-            settings.gridRadius,
-            settings.gridFutureSteps
-        );
+        const v = Vector.one(dim).mult(settings.gridRadius);
+        const newGrid = RuleGrid.withBounds(v.negated(), v, dim);
         newGrid.outputCells = grid.outputCells;
         setGrid(newGrid);
     }
 
     function clearOutputs() {
-        const newGrid = RuleGrid.withSize(
-            settings.gridRadius,
-            settings.gridFutureSteps
-        );
+        const v = Vector.one(dim).mult(settings.gridRadius);
+        const newGrid = RuleGrid.withBounds(v.negated(), v, dim);
         newGrid.inputCells = grid.inputCells;
         setGrid(newGrid);
     }
@@ -91,12 +85,9 @@ export default function EditGrid(props: EditGridProps) {
 
     function saveGridAsRule() {
         function hasOutputs(): boolean {
-            for (const row of grid.outputCells) {
-                for (const pos of row.iter()) {
-                    const cell = row.getCellAt(pos);
-                    if (cell!.signals.size > 0) {
-                        return true;
-                    }
+            for (const cell of grid.outputCells.iterCells()) {
+                if (cell.signals.size > 0) {
+                    return true;
                 }
             }
             return false;
@@ -111,21 +102,11 @@ export default function EditGrid(props: EditGridProps) {
     }
 
     function applyRules(): RuleGrid {
-        const configuration = new Configuration1D(
-            Array.from(grid.inputCells.iter(), (c) =>
-                grid.inputCells.getCellAt(c)!.clone()
-            )
+        return new RuleGrid(
+            grid.inputCells,
+            automaton.applyRules(grid.inputCells),
+            grid.shift
         );
-        const diagram = [configuration];
-        while (diagram.length < settings.gridFutureSteps + 1) {
-            diagram.push(
-                Configuration1D.withSize(
-                    new Vector([2 * settings.gridRadius + 1])
-                )
-            );
-        }
-        automaton.applyRulesOnDiagram(diagram, 0);
-        return new RuleGrid(grid.inputCells, diagram.slice(1));
     }
 
     // TODO: re-implement fitting rules
@@ -170,8 +151,8 @@ export default function EditGrid(props: EditGridProps) {
             });
         }
     });
-    activeOutputCells.forEach((site) => {
-        const cell = grid.outputCells[site.time].getCellAt(site.pos);
+    activeOutputCells.forEach((pos) => {
+        const cell = grid.outputCells.getCellAt(pos);
         if (cell) {
             cell.signals.forEach((signal) => {
                 activeSignals.add(signal);
@@ -201,8 +182,7 @@ export default function EditGrid(props: EditGridProps) {
                         </Button>
                     </div>
                     <GridComponent
-                        inputCells={grid.inputCells}
-                        outputCells={grid.outputCells}
+                        ruleGrid={grid}
                         colorMap={colorMap}
                         activeCellsManager={{
                             activeInputCells,

@@ -9,7 +9,7 @@ import {
 export default function mirror(
     rules: Rule[],
     context: EvalContext,
-    parameters: TransformationParameter[]
+    parameters: TransformationParameter[],
 ): TransformationOutput {
     const tag1 = parameters[0].toString();
     const tag2 = parameters[1].toString();
@@ -47,10 +47,9 @@ export default function mirror(
                         new RuleOutput(
                             output.position.negated(),
                             switchTags(output.signal),
-                            output.futureStep
-                        )
-                )
-            )
+                        ),
+                ),
+            ),
     );
 
     // add new multi-signals
@@ -59,7 +58,7 @@ export default function mirror(
         const newSignal = switchTags(signal);
         if (newSignal !== signal) {
             const newSubSignals = new Set(
-                Array.from(subSignals).map(switchTags)
+                Array.from(subSignals).map(switchTags),
             );
             newMultiSignals.set(newSignal, newSubSignals);
         }

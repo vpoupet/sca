@@ -10,18 +10,21 @@ interface CellComponentProps {
     isActive?: boolean;
     hiddenSignalsSet?: Set<Signal>;
     colorMap: Map<Signal, string>;
+    className?: string;
 }
 
-export default function CellComponent({
-    cell,
-    onClick,
-    isActive = false,
-    hiddenSignalsSet = new Set(),
-    colorMap,
-}: CellComponentProps) {
+export default function CellComponent(props: CellComponentProps) {
+    const {
+        cell,
+        onClick,
+        isActive,
+        hiddenSignalsSet = new Set(),
+        colorMap,
+        className = "",
+    } = props;
     const signals = [...cell.signals].filter((s) => !hiddenSignalsSet.has(s));
     const negatedSignals = [...cell.negatedSignals].filter(
-        (s) => !hiddenSignalsSet.has(s)
+        (s) => !hiddenSignalsSet.has(s),
     );
 
     if (signals.length === 0 && negatedSignals.length === 0) {
@@ -29,7 +32,7 @@ export default function CellComponent({
             <div
                 className={`cell aspect-square flex-1 border-gray-200 border ${
                     isActive ? "bg-gray-300" : "bg-white"
-                }`}
+                } ${className}`}
                 onClick={onClick}
             ></div>
         );
@@ -41,7 +44,7 @@ export default function CellComponent({
                 <div
                     className={`cell aspect-square flex-1 border-gray-200 border ${
                         isActive ? "bg-gray-300" : "bg-white"
-                    }`}
+                    } ${className}`}
                     onClick={onClick}
                 >
                     {signals.map((signal) => {

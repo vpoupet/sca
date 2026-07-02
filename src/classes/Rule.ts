@@ -1,50 +1,34 @@
 import type { Signal } from "../types";
 import Clause, {
-    Conjunction,
-    type ConjunctionOfLiterals,
-    Disjunction,
-    EvalContext,
-    Negation,
+    type ConjunctionOfLiterals
 } from "./Clause";
-import RuleGrid from "./RuleGrid";
 import Vector from "./Vector";
 
 export class RuleOutput {
     position: Vector;
     signal: Signal;
-    futureStep: number;
 
-    constructor(position: Vector, signal: Signal, futureStep = 1) {
+    constructor(position: Vector, signal: Signal) {
         this.position = position;
         this.signal = signal;
-        this.futureStep = futureStep;
     }
 
     toString(): string {
         const positionStr = this.position.isZero()
             ? ""
-            : `${this.position.toString()}`;
-        const futureStepStr =
-            this.futureStep === 1 ? "" : `/${this.futureStep}`;
-        const dotStr = positionStr !== "" || futureStepStr !== "" ? "." : "";
+            : `${this.position.toString()}.`;
 
-        return `${positionStr}${futureStepStr}${dotStr}${Symbol.keyFor(
-            this.signal
-        )}`;
+        return `${positionStr}${Symbol.keyFor(this.signal)}`;
     }
 
     equals(other: RuleOutput): boolean {
         return (
             this.position.equals(other.position) &&
-            this.signal === other.signal &&
-            this.futureStep === other.futureStep
+            this.signal === other.signal
         );
     }
 
     compareTo(other: RuleOutput): number {
-        if (this.futureStep !== other.futureStep) {
-            return this.futureStep - other.futureStep;
-        }
         const posComp = this.position.compareTo(other.position);
         if (posComp !== 0) {
             return posComp;
@@ -58,7 +42,6 @@ export class RuleOutput {
         return new RuleOutput(
             this.position,
             this.signal === oldSymbol ? newSymbol : this.signal,
-            this.futureStep
         );
     }
 }
@@ -105,77 +88,9 @@ export default class Rule {
         return new Rule(
             this.condition.renameSignal(oldSignal, newSignal),
             this.outputs.map((output) =>
-                output.renameSignal(oldSignal, newSignal)
-            )
+                output.renameSignal(oldSignal, newSignal),
+            ),
         );
-    }
-
-    // TODO check that fitting still works (and check 2D case)
-    fitTarget(targetGrid: RuleGrid, context: EvalContext): Rule[] {
-        const targetRule = targetGrid.makeRule();
-        const minPosition = targetRule.condition.getMinPosition();
-        const maxPosition = targetRule.condition.getMaxPosition();
-
-        const validOutputs = new Set(this.outputs);
-        const invalidOutputs = new Map<RuleOutput, Vector[]>();
-
-        for (const c of targetGrid.inputCells.iterWithNeighborhood(
-            minPosition,
-            maxPosition
-        )) {
-            if (this.condition.eval(targetGrid.inputCells, c, context)) {
-                for (const output of this.outputs) {
-                    if (
-                        0 < output.futureStep &&
-                        output.futureStep <= targetGrid.outputCells.length
-                    ) {
-                        const cell = targetGrid.outputCells[
-                            output.futureStep - 1
-                        ].getCellAt(Vector.add(c, output.position));
-                        if (cell && !cell.has(output.signal)) {
-                            // this output should be removed when in the exact conditions of the input
-                            validOutputs.delete(output);
-                            if (!invalidOutputs.has(output)) {
-                                invalidOutputs.set(output, []);
-                            }
-                            invalidOutputs.get(output)!.push(c);
-                        }
-                    }
-                }
-            }
-        }
-        if (validOutputs.size === this.outputs.length) {
-            // no need to change the rule
-            return [this];
-        } else {
-            const resultingRules = [];
-            if (validOutputs.size > 0) {
-                resultingRules.push(
-                    new Rule(this.condition, Array.from(validOutputs))
-                );
-            }
-            const gridInputsConjunction = targetGrid.makeRuleCondition(false);
-            for (const [output, positions] of invalidOutputs) {
-                resultingRules.push(
-                    new Rule(
-                        new Conjunction([
-                            this.condition,
-                            new Negation(
-                                new Disjunction(
-                                    positions.map((p) =>
-                                        gridInputsConjunction.shifted(
-                                            p.negated()
-                                        )
-                                    )
-                                )
-                            ),
-                        ]).simplified(),
-                        [output]
-                    )
-                );
-            }
-            return resultingRules;
-        }
     }
 
     getDimension(): number {
@@ -187,6 +102,28 @@ export default class Rule {
             dim = Math.max(dim, output.position.dimension());
         }
         return dim;
+    }
+
+    getMaxPosition(): Vector {
+        let max = new Vector();
+        for (const literal of this.condition.getLiterals()) {
+            max = max.max(literal.position);
+        }
+        for (const output of this.outputs) {
+            max = max.max(output.position);
+        }
+        return max;
+    }
+
+    getMinPosition(): Vector {
+        let min = new Vector();
+        for (const literal of this.condition.getLiterals()) {
+            min = min.min(literal.position);
+        }
+        for (const output of this.outputs) {
+            min = min.min(output.position);
+        }
+        return min;
     }
 }
 

@@ -52,7 +52,6 @@ export default function mirror_diag(
                         new RuleOutput(
                             mirrorVector2D(output.position),
                             switchTags(output.signal),
-                            output.futureStep
                         )
                 )
             )

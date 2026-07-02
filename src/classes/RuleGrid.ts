@@ -1,82 +1,93 @@
-import Cell from "./Cell.ts";
 import Clause, { Conjunction, Literal } from "./Clause.ts";
-import { Configuration, Configuration1D } from "./Configuration.ts";
-import Rule, { RuleOutput } from "./Rule.ts";
+import { Configuration } from "./Configuration.ts";
+import Rule, { RuleOutput, type ConjunctionRule } from "./Rule.ts";
 import Vector from "./Vector.ts";
 
 class RuleGrid {
     inputCells: Configuration;
-    outputCells: Configuration[];
+    outputCells: Configuration;
+    shift: Vector;
 
     constructor(
         inputCells: Configuration,
-        outputCells: Configuration[]
+        outputCells: Configuration,
+        shift: Vector,
     ) {
         this.inputCells = inputCells;
         this.outputCells = outputCells;
+        this.shift = shift;
     }
 
-    static withSize(radius: number, nbFutureSteps: number): RuleGrid {
-        const nbCells = radius * 2 + 1;
-        const inputs = new Configuration1D(
-            Array.from({ length: nbCells }, () => new Cell())
-        );
-        const outputs = Array.from(
-            { length: nbFutureSteps },
-            () =>
-                new Configuration1D(
-                    Array.from({ length: nbCells }, () => new Cell())
-                )
-        );
-        return new RuleGrid(inputs, outputs);
+    static withBounds(min: Vector, max: Vector, dimension: number): RuleGrid {
+        const size = Vector.subtract(max, min).add(Vector.one(dimension));
+        const inputs = Configuration.withSize(size);
+        const outputs = Configuration.withSize(size);
+        return new RuleGrid(inputs, outputs, min);
     }
 
-    getRadius(): number {
-        return (this.inputCells.getSize().at(0) - 1) / 2;
+    static fromRule(rule: ConjunctionRule, dimension: number, radius: number): RuleGrid {
+        const v = Vector.one(dimension).mult(radius);
+        const min = rule.getMinPosition().min(v.negated());
+        const max = rule.getMaxPosition().max(v);
+        const grid = RuleGrid.withBounds(min, max, dimension);
+        for (const literal of rule.condition.getLiterals()) {
+            const position = Vector.subtract(literal.position, grid.shift);
+            const cell = grid.inputCells.getCellAt(position);
+            if (cell === null) {
+                throw new Error(
+                    `Position ${position.toString()} is out of bounds`,
+                );
+            }
+            if (literal.sign) {
+                cell.addSignal(literal.signal);
+            } else {
+                cell.addNegatedSignal(literal.signal);
+            }
+        }
+        for (const output of rule.outputs) {
+            const position = Vector.subtract(output.position, grid.shift);
+            const cell = grid.outputCells.getCellAt(position);
+            if (cell === null) {
+                throw new Error(
+                    `Position ${position.toString()} is out of bounds`,
+                );
+            }
+            cell.addSignal(output.signal);
+        }
+        return grid;
+    }
+
+    getDimension(): number {
+        return this.inputCells.getDimension();
     }
 
     clone(): this {
         return new (this.constructor as new (
             inputCells: Configuration,
-            outputCells: Configuration[]
+            outputCells: Configuration,
+            shift: Vector,
         ) => this)(
             this.inputCells.clone(),
-            this.outputCells.map((row) => row.clone())
+            this.outputCells.clone(),
+            this.shift.clone(),
         );
     }
 
-    equals(other: RuleGrid): boolean {
-        // compare inputs
-        if (!this.inputCells.equals(other.inputCells)) {
-            return false;
-        }
-        if (this.outputCells.length !== other.outputCells.length) {
-            return false;
-        }
-        for (let i = 0; i < this.outputCells.length; i++) {
-            if (!this.outputCells[i].equals(other.outputCells[i])) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    makeRule(centerOrigin: boolean = true): Rule {
+    makeRule(): Rule {
         return new Rule(
-            this.makeRuleCondition(centerOrigin),
-            this.makeRuleOutputs(centerOrigin)
+            this.makeRuleCondition(),
+            this.makeRuleOutputs(),
         );
     }
 
-    makeRuleCondition(centerOrigin: boolean = true): Clause {
-        const shift = new Vector([centerOrigin ? -this.getRadius() : 0]);
+    makeRuleCondition(): Clause {
         const literals: Literal[] = [];
-        for (const c of this.inputCells.iter()) {
+        for (const c of this.inputCells.iterPositions()) {
             const cell = this.inputCells.getCellAt(c);
             if (cell === null) {
                 continue;
             }
-            const position = Vector.add(c, shift);
+            const position = Vector.add(c, this.shift);
             cell.signals.forEach((signal) => {
                 const literal = new Literal(signal, position, true);
                 literals.push(literal);
@@ -88,30 +99,24 @@ class RuleGrid {
         }
         if (literals.length === 1) {
             return literals[0];
+        } else {
+            return new Conjunction(literals);
         }
-        return new Conjunction(literals);
     }
 
-    makeRuleOutputs(centerOrigin: boolean = true): RuleOutput[] {
-        const shift = new Vector([centerOrigin ? -this.getRadius() : 0]);
+    makeRuleOutputs(): RuleOutput[] {
         const outputs: RuleOutput[] = [];
-        this.outputCells.forEach((row, rowIndex) => {
-            for (const c of row.iter()) {
-                const cell = row.getCellAt(c);
-                if (cell === null) {
-                    continue;
-                }
-                const position = Vector.add(c, shift);
-                cell.signals.forEach((signal) => {
-                    const ruleOutput = new RuleOutput(
-                        position,
-                        signal,
-                        rowIndex + 1
-                    );
-                    outputs.push(ruleOutput);
-                });
+        for (const c of this.outputCells.iterPositions()) {
+            const cell = this.outputCells.getCellAt(c);
+            if (cell === null) {
+                continue;
             }
-        });
+            const position = Vector.add(c, this.shift);
+            cell.signals.forEach((signal) => {
+                const ruleOutput = new RuleOutput(position, signal);
+                outputs.push(ruleOutput);
+            });
+        }
         return outputs;
     }
 }

@@ -1,5 +1,3 @@
-class VectorError extends Error {}
-
 export default class Vector {
     coords: number[];
 
@@ -67,53 +65,43 @@ export default class Vector {
     }
 
     add(other: Vector): Vector {
-        const resultingCoords: number[] = [];
-        for (
-            let i = 0;
-            i < Math.max(this.coords.length, other.coords.length);
-            i++
-        ) {
-            resultingCoords.push(
-                (this.coords[i] || 0) + (other.coords[i] || 0)
-            );
-        }
-        return new Vector(resultingCoords);
+        return new Vector(
+            new Array(Math.max(this.coords.length, other.coords.length))
+                .fill(0)
+                .map((_, i) => (this.coords[i] || 0) + (other.coords[i] || 0)),
+        );
     }
 
     static add(v1: Vector, v2: Vector): Vector {
-        const resultingCoords: number[] = [];
-        for (let i = 0; i < Math.max(v1.coords.length, v2.coords.length); i++) {
-            resultingCoords.push((v1.coords[i] || 0) + (v2.coords[i] || 0));
-        }
-        return new Vector(resultingCoords);
+        return new Vector(
+            new Array(Math.max(v1.coords.length, v2.coords.length))
+                .fill(0)
+                .map((_, i) => (v1.coords[i] || 0) + (v2.coords[i] || 0)),
+        );
     }
 
     subtract(other: Vector): Vector {
-        if (this.coords.length !== other.coords.length) {
-            throw new VectorError(
-                "Cannot subtract vectors of different dimensions"
-            );
-        }
-
-        const resultingCoords: number[] = [];
-        for (let i = 0; i < this.coords.length; i++) {
-            resultingCoords.push(this.coords[i] - other.coords[i]);
-        }
-        return new Vector(resultingCoords);
+        return new Vector(
+            new Array(Math.max(this.coords.length, other.coords.length))
+                .fill(0)
+                .map((_, i) => (this.coords[i] || 0) - (other.coords[i] || 0)),
+        );
     }
 
     static subtract(v1: Vector, v2: Vector): Vector {
-        if (v1.coords.length !== v2.coords.length) {
-            throw new VectorError(
-                "Cannot subtract vectors of different dimensions"
-            );
-        }
+        return new Vector(
+            new Array(Math.max(v1.coords.length, v2.coords.length))
+                .fill(0)
+                .map((_, i) => (v1.coords[i] || 0) - (v2.coords[i] || 0)),
+        );
+    }
 
-        const resultingCoords: number[] = [];
-        for (let i = 0; i < v1.coords.length; i++) {
-            resultingCoords.push(v1.coords[i] - v2.coords[i]);
-        }
-        return new Vector(resultingCoords);
+    mult(scalar: number): Vector {
+        return new Vector(this.coords.map((coord) => coord * scalar));
+    }
+
+    static mult(v: Vector, scalar: number): Vector {
+        return new Vector(v.coords.map((coord) => coord * scalar));
     }
 
     negated(): Vector {
@@ -128,7 +116,7 @@ export default class Vector {
             i++
         ) {
             resultingCoords.push(
-                Math.max(this.coords[i] || 0, other.coords[i] || 0)
+                Math.max(this.coords[i] || 0, other.coords[i] || 0),
             );
         }
         return new Vector(resultingCoords);
@@ -138,7 +126,7 @@ export default class Vector {
         const resultingCoords: number[] = [];
         for (let i = 0; i < Math.max(v1.coords.length, v2.coords.length); i++) {
             resultingCoords.push(
-                Math.max(v1.coords[i] || 0, v2.coords[i] || 0)
+                Math.max(v1.coords[i] || 0, v2.coords[i] || 0),
             );
         }
         return new Vector(resultingCoords);
@@ -152,7 +140,7 @@ export default class Vector {
             i++
         ) {
             resultingCoords.push(
-                Math.min(this.coords[i] || 0, other.coords[i] || 0)
+                Math.min(this.coords[i] || 0, other.coords[i] || 0),
             );
         }
         return new Vector(resultingCoords);
@@ -162,10 +150,18 @@ export default class Vector {
         const resultingCoords: number[] = [];
         for (let i = 0; i < Math.max(v1.coords.length, v2.coords.length); i++) {
             resultingCoords.push(
-                Math.min(v1.coords[i] || 0, v2.coords[i] || 0)
+                Math.min(v1.coords[i] || 0, v2.coords[i] || 0),
             );
         }
         return new Vector(resultingCoords);
+    }
+
+    static zero(dimension: number): Vector {
+        return new Vector(Array.from({ length: dimension }, () => 0));
+    }
+
+    static one(dimension: number): Vector {
+        return new Vector(Array.from({ length: dimension }, () => 1));
     }
 
     toString(): string {

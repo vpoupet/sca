@@ -1,12 +1,12 @@
+import type RuleGrid from "@/classes/RuleGrid";
+import { CircleArrowDown, CircleArrowUp, Clipboard, Redo, Undo } from "lucide-react";
+import { useState } from "react";
 import Automaton from "../classes/Automaton";
+import Rule from "../classes/Rule";
 import type { SettingsType, Signal } from "../types";
 import RuleComponent from "./RuleComponent";
-import { useState } from "react";
-import RuleGrid from "../classes/RuleGrid";
-import Rule from "../classes/Rule";
 import Heading from "./Typography";
 import { Button } from "./ui/button";
-import { CircleArrowDown, CircleArrowUp, Clipboard, Redo, Undo } from "lucide-react";
 
 interface RulesListProps {
     automaton: Automaton;

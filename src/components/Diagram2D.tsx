@@ -27,18 +27,27 @@ export default function Diagram2D({
     const [currentStep, setCurrentStep] = useState(0);
     const [configurationHistory, setConfigurationHistory] = useState<
         IndexedConfiguration[]
-    >([{ time: 0, configuration: [initialConfiguration] }]);
+    >([
+        {
+            time: 0,
+            configuration: initialConfiguration,
+        },
+    ]);
 
     function incrementStep() {
         const newStep = currentStep + 1;
         setCurrentStep(newStep);
-        setConfigurationHistory(automaton.getHistoryAtTime(newStep, configurationHistory));
+        setConfigurationHistory(
+            automaton.getHistoryAtTime(newStep, configurationHistory),
+        );
     }
-    
+
     function decrementStep() {
         const newStep = Math.max(currentStep - 1, 0);
         setCurrentStep(newStep);
-        setConfigurationHistory(automaton.getHistoryAtTime(newStep, configurationHistory));
+        setConfigurationHistory(
+            automaton.getHistoryAtTime(newStep, configurationHistory),
+        );
     }
 
     return (
@@ -51,7 +60,7 @@ export default function Diagram2D({
             </div>
             <div className="flex flex-col justify-center w-full align-middle">
                 <Config2DComponent
-                    config={configurationHistory.at(-1)!.configuration[0]}
+                    config={configurationHistory.at(-1)!.configuration}
                     hiddenSignalsSet={hiddenSignalsSet}
                     colorMap={colorMap}
                 />
@@ -73,7 +82,7 @@ export function DiagramRow({
 }: DiagramRowProps) {
     return (
         <div className="flex flex-row w-full">
-            {[...config.iter()].map((c) => {
+            {[...config.iterPositions()].map((c) => {
                 const cell = config.getCellAt(c);
                 return (
                     <CellComponent

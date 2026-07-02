@@ -28,7 +28,7 @@ export abstract class Configuration {
 
     getSignals(): Set<Signal> {
         const signals = new Set<Signal>();
-        for (const c of this.iter()) {
+        for (const c of this.iterPositions()) {
             const cell = this.getCellAt(c);
             cell?.signals.forEach((s) => signals.add(s));
         }
@@ -42,24 +42,29 @@ export abstract class Configuration {
         }
     }
 
-    abstract iter(): Iterable<Vector>;
+    abstract getDimension(): number;
 
-    abstract iterWithNeighborhood(
+    abstract iterPositions(): Iterable<Vector>;
+
+    abstract iterPositionsWithNeighborhood(
         minPosition: Vector,
-        maxPosition: Vector
+        maxPosition: Vector,
     ): Iterable<Vector>;
 
+    abstract iterCells(): Iterable<Cell>;
+
     static withSize(dimensions: Vector): Configuration {
-        if (dimensions.coords.length === 1) {
+        if (dimensions.intrinsicDimension() === 1) {
             return Configuration1D.withSize(dimensions);
-        } else {
+        } else if (dimensions.intrinsicDimension() === 2) {
             // if dimensions has at least 2 coords, use first two to create 2D configuration
             return Configuration2D.withSize(dimensions);
         }
+        throw new Error(`Unsupported dimensions: ${dimensions}`);
     }
 
     static fromJSON(
-        data: z.infer<typeof configurationFileSchema>
+        data: z.infer<typeof configurationFileSchema>,
     ): Configuration {
         const config = Configuration.withSize(new Vector(data.size));
         for (const [key, signalNames] of Object.entries(data.signals)) {
@@ -79,7 +84,7 @@ export abstract class Configuration {
         if (!this.getSize().equals(other.getSize())) {
             return false;
         }
-        for (const c of this.iter()) {
+        for (const c of this.iterPositions()) {
             const thisCell = this.getCellAt(c);
             const otherCell = other.getCellAt(c);
             if (thisCell === null || otherCell === null) {
@@ -106,13 +111,13 @@ export class Configuration1D extends Configuration {
         return new Configuration1D(
             Array(dimensions.at(0))
                 .fill(0)
-                .map(() => new Cell())
+                .map(() => new Cell()),
         );
     }
 
     clone(): this {
         return new (this.constructor as new (cells: Cell[]) => this)(
-            this.cells.map((cell) => cell.clone())
+            this.cells.map((cell) => cell.clone()),
         );
     }
 
@@ -135,15 +140,19 @@ export class Configuration1D extends Configuration {
         }
     }
 
-    *iter(): Generator<Vector> {
+    getDimension(): number {
+        return 1;
+    }
+
+    *iterPositions(): Generator<Vector> {
         for (let i = 0; i < this.cells.length; ++i) {
             yield new Vector([i]);
         }
     }
 
-    *iterWithNeighborhood(
+    *iterPositionsWithNeighborhood(
         minPosition: Vector,
-        maxPosition: Vector
+        maxPosition: Vector,
     ): Generator<Vector> {
         for (
             let i = -maxPosition.at(0);
@@ -151,6 +160,12 @@ export class Configuration1D extends Configuration {
             ++i
         ) {
             yield new Vector([i]);
+        }
+    }
+
+    *iterCells(): Generator<Cell> {
+        for (const cell of this.cells) {
+            yield cell;
         }
     }
 }
@@ -173,7 +188,7 @@ export class Configuration2D extends Configuration {
                 .fill(0)
                 .map(() => new Cell()),
             dimensions.at(0),
-            dimensions.at(1)
+            dimensions.at(1),
         );
     }
 
@@ -181,11 +196,11 @@ export class Configuration2D extends Configuration {
         return new (this.constructor as new (
             cells: Cell[],
             width: number,
-            height: number
+            height: number,
         ) => this)(
             this.cells.map((cell) => cell.clone()),
             this.width,
-            this.height
+            this.height,
         );
     }
 
@@ -212,7 +227,11 @@ export class Configuration2D extends Configuration {
         this.cells[index] = cell;
     }
 
-    *iter(): Generator<Vector> {
+    getDimension(): number {
+        return 2;
+    }
+
+    *iterPositions(): Generator<Vector> {
         for (let y = 0; y < this.height; ++y) {
             for (let x = 0; x < this.width; ++x) {
                 yield new Vector([x, y]);
@@ -220,9 +239,9 @@ export class Configuration2D extends Configuration {
         }
     }
 
-    *iterWithNeighborhood(
+    *iterPositionsWithNeighborhood(
         minPosition: Vector,
-        maxPosition: Vector
+        maxPosition: Vector,
     ): Generator<Vector> {
         const minPosX = minPosition.at(0);
         const minPosY = minPosition.at(1);
@@ -232,6 +251,12 @@ export class Configuration2D extends Configuration {
             for (let x = -maxPosX; x < this.width - minPosX; ++x) {
                 yield new Vector([x, y]);
             }
+        }
+    }
+
+    *iterCells(): Generator<Cell> {
+        for (const cell of this.cells) {
+            yield cell;
         }
     }
 }
