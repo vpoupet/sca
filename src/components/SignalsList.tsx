@@ -72,7 +72,9 @@ export default function SignalsList({
         setColorMap(newColorMap);
 
         if (automaton.signals.has(oldValue)) {
-            setAutomaton(automaton.replaceSignal(oldValue, newValue));
+            const newAutomaton = automaton.clone();
+            newAutomaton.replaceSignal(oldValue, newValue);
+            setAutomaton(newAutomaton);
         }
     }
 

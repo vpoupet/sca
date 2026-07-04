@@ -33,7 +33,7 @@ const lexer = moo.compile({
     la: "{",
     ra: "}",
     at: "@",
-    identifier: /[a-zA-Z_$][a-zA-Z_$0-9]*/,
+    identifier: /[a-zA-Z_$][a-zA-Z_$0-9\-→,/]*/,
 });
 lexer.next = (next => () => {
     let tok;
@@ -117,14 +117,14 @@ LITERAL -> SIGNAL_NAME
         new Literal(Symbol.for(s), new Vector(), true) %}
 
 OUTPUT -> SIGNAL_NAME
-   {% ([s]) => new RuleOutput(new Vector([]), Symbol.for(s), 1) %}
+   {% ([s]) => new RuleOutput(Symbol.for(s), new Vector([]), 1) %}
 OUTPUT -> POSITION_LIST "." SIGNAL_NAME
-   {% ([pos, , s]) => new RuleOutput(new Vector(pos), Symbol.for(s), 1) %}
+   {% ([pos, , s]) => new RuleOutput(Symbol.for(s), new Vector(pos), 1) %}
 OUTPUT -> "/" INT "." SIGNAL_NAME
-   {% ([, step, , s]) => new RuleOutput(new Vector([]), Symbol.for(s), step) %}
+   {% ([, step, , s]) => new RuleOutputWithTimeStep(Symbol.for(s), new Vector([]), step) %}
 OUTPUT -> POSITION_LIST "/" INT "." SIGNAL_NAME
    {% ([pos, , step, , s]) =>
-        new RuleOutput(new Vector(pos), Symbol.for(s), step) %}
+        new RuleOutput(Symbol.for(s), new Vector(pos), step) %}
 OUTPUTS_LIST -> OUTPUT | OUTPUTS_LIST OUTPUT {% ([list, o]) => [...list, o] %}
 
 MULTISIGNAL_LINE -> INDENT SIGNAL_NAME "=" SIGNAL_VALUES {% ([indent, multiSignalName, , values]) => ({

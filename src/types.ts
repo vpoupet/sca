@@ -3,6 +3,7 @@ import Vector from "./classes/Vector";
 import type { Configuration } from "./classes/Configuration";
 
 export type Signal = symbol;
+export type MultiSignals = Map<Signal, Set<Signal>>;
 export type DiagramCell = { signals: Set<Signal> };
 export type Site = { pos: Vector; time: number };
 export type IndexedConfiguration = { 

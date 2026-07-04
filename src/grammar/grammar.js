@@ -33,7 +33,7 @@ const lexer = moo.compile({
     la: "{",
     ra: "}",
     at: "@",
-    identifier: /[a-zA-Z_$][a-zA-Z_$0-9]*/,
+    identifier: /[a-zA-Z_$][a-zA-Z_$0-9\-→,/]*/,
 });
 lexer.next = (next => () => {
     let tok;
@@ -135,11 +135,11 @@ let ParserRules = [
         new Literal(Symbol.for(s), new Vector(coords), bang ? false : true) },
     {"name": "LITERAL", "symbols": ["SIGNAL_NAME"], "postprocess":  ([s]) =>
         new Literal(Symbol.for(s), new Vector(), true) },
-    {"name": "OUTPUT", "symbols": ["SIGNAL_NAME"], "postprocess": ([s]) => new RuleOutput(new Vector([]), Symbol.for(s), 1)},
-    {"name": "OUTPUT", "symbols": ["POSITION_LIST", {"literal":"."}, "SIGNAL_NAME"], "postprocess": ([pos, , s]) => new RuleOutput(new Vector(pos), Symbol.for(s), 1)},
-    {"name": "OUTPUT", "symbols": [{"literal":"/"}, "INT", {"literal":"."}, "SIGNAL_NAME"], "postprocess": ([, step, , s]) => new RuleOutput(new Vector([]), Symbol.for(s), step)},
+    {"name": "OUTPUT", "symbols": ["SIGNAL_NAME"], "postprocess": ([s]) => new RuleOutput(Symbol.for(s), new Vector([]), 1)},
+    {"name": "OUTPUT", "symbols": ["POSITION_LIST", {"literal":"."}, "SIGNAL_NAME"], "postprocess": ([pos, , s]) => new RuleOutput(Symbol.for(s), new Vector(pos), 1)},
+    {"name": "OUTPUT", "symbols": [{"literal":"/"}, "INT", {"literal":"."}, "SIGNAL_NAME"], "postprocess": ([, step, , s]) => new RuleOutputWithTimeStep(Symbol.for(s), new Vector([]), step)},
     {"name": "OUTPUT", "symbols": ["POSITION_LIST", {"literal":"/"}, "INT", {"literal":"."}, "SIGNAL_NAME"], "postprocess":  ([pos, , step, , s]) =>
-        new RuleOutput(new Vector(pos), Symbol.for(s), step) },
+        new RuleOutput(Symbol.for(s), new Vector(pos), step) },
     {"name": "OUTPUTS_LIST", "symbols": ["OUTPUT"]},
     {"name": "OUTPUTS_LIST", "symbols": ["OUTPUTS_LIST", "OUTPUT"], "postprocess": ([list, o]) => [...list, o]},
     {"name": "MULTISIGNAL_LINE", "symbols": ["INDENT", "SIGNAL_NAME", {"literal":"="}, "SIGNAL_VALUES"], "postprocess":  ([indent, multiSignalName, , values]) => ({

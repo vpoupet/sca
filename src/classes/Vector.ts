@@ -104,6 +104,14 @@ export default class Vector {
         return new Vector(v.coords.map((coord) => coord * scalar));
     }
 
+    divInt(scalar: number): Vector {
+        return new Vector(this.coords.map((coord) => Math.trunc(coord / scalar)));
+    }
+
+    static divInt(v: Vector, scalar: number): Vector {
+        return new Vector(v.coords.map((coord) => Math.trunc(coord / scalar)));
+    }
+
     negated(): Vector {
         return new Vector(this.coords.map((coord) => -coord));
     }
@@ -120,6 +128,16 @@ export default class Vector {
             );
         }
         return new Vector(resultingCoords);
+    }
+
+    mutateMax(other: Vector): void {
+        for (
+            let i = 0;
+            i < Math.max(this.coords.length, other.coords.length);
+            i++
+        ) {
+            this.coords[i] = Math.max(this.coords[i] || 0, other.coords[i] || 0);
+        }
     }
 
     static max(v1: Vector, v2: Vector): Vector {
@@ -146,6 +164,16 @@ export default class Vector {
         return new Vector(resultingCoords);
     }
 
+    mutateMin(other: Vector): void {
+        for (
+            let i = 0;
+            i < Math.max(this.coords.length, other.coords.length);
+            i++
+        ) {
+            this.coords[i] = Math.min(this.coords[i] || 0, other.coords[i] || 0);
+        }
+    }
+
     static min(v1: Vector, v2: Vector): Vector {
         const resultingCoords: number[] = [];
         for (let i = 0; i < Math.max(v1.coords.length, v2.coords.length); i++) {
@@ -165,6 +193,6 @@ export default class Vector {
     }
 
     toString(): string {
-        return this.coords.join(", ");
+        return this.coords.join(",");
     }
 }

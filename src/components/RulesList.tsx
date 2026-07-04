@@ -37,11 +37,15 @@ export default function RulesList(props: RulesListProps) {
     const [isExpanded, setIsExpanded] = useState(true);
 
     function deleteRule(rule: Rule) {
-        setAutomaton(automaton.deleteRule(rule));
+        const newAutomaton = automaton.clone();
+        newAutomaton.deleteRule(rule);
+        setAutomaton(newAutomaton);
     }
 
     function replaceRule(oldRule: Rule, newRules: Rule[]) {
-        setAutomaton(automaton.replaceRule(oldRule, newRules));
+        const newAutomaton = automaton.clone();
+        automaton.replaceRule(oldRule, newRules)
+        setAutomaton(newAutomaton);
     }
 
     return (
@@ -83,6 +87,18 @@ export default function RulesList(props: RulesListProps) {
             </span>
             {isExpanded && (
                 <div className="flex flex-col gap-2 m-2">
+                    {automaton.rewriteRules.map((rule) => (
+                        <RuleComponent
+                            key={rule.toString()}
+                            rule={rule}
+                            settings={settings}
+                            deleteRule={deleteRule}
+                            replaceRule={replaceRule}
+                            grid={grid}
+                            setGrid={setGrid}
+                            colorMap={colorMap}
+                        />
+                    ))}
                     {automaton.rules.map((rule) => (
                         <RuleComponent
                             key={rule.toString()}

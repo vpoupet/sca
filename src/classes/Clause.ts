@@ -1,4 +1,4 @@
-import { type Signal } from "../types.ts";
+import { type MultiSignals, type Signal } from "../types.ts";
 import { Configuration } from "./Configuration.ts";
 import Vector from "./Vector.ts";
 
@@ -16,10 +16,14 @@ export interface DNFClause extends Disjunction {
 }
 
 export class EvalContext {
-    multiSignals: Map<Signal, Set<Signal>>;
+    multiSignals: MultiSignals;
 
-    constructor(multiSignals: Map<Signal, Set<Signal>> = new Map()) {
+    constructor(multiSignals: MultiSignals = new Map()) {
         this.multiSignals = multiSignals;
+    }
+
+    clone(): EvalContext {
+        return new EvalContext(new Map(this.multiSignals));
     }
 
     /**

@@ -94,7 +94,10 @@ export default function EditGrid(props: EditGridProps) {
         }
 
         if (hasOutputs()) {
-            setAutomaton(automaton.addRules([grid.makeRule()]));
+            const newAutomaton = automaton.clone();
+            const rule = grid.makeRule();
+            newAutomaton.addRuleset(rule.asRuleSet());
+            setAutomaton(newAutomaton);
             clearGrid();
         } else {
             alert("Rule has no outputs");

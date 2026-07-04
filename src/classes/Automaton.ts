@@ -1,12 +1,8 @@
-import nearley from "nearley";
-import grammar from "../grammar/grammar.js";
-import type { ParsedLine } from "../grammar/types.ts";
-import type { IndexedConfiguration, Signal } from "../types.ts";
-import Clause, { Conjunction, EvalContext } from "./Clause.ts";
+import type { IndexedConfiguration, MultiSignals, Signal } from "../types.ts";
+import { EvalContext } from "./Clause.ts";
 import { Configuration } from "./Configuration.ts";
 import DirectedGraph from "./Graph.ts";
-import Rule from "./Rule.ts";
-import { transformations } from "./transformations/Transformation.ts";
+import Rule, { NextStepRule, RewriteRule, type Ruleset } from "./Rule.ts";
 import Vector from "./Vector.ts";
 
 export default class Automaton {
@@ -15,16 +11,23 @@ export default class Automaton {
      */
     signals: Set<Signal>;
     /**
-     * Map of multi-signals (a multi-signal is a single name that can represent multiple signals)
+     * Map of multi-signals
      */
-    multiSignals: Map<Signal, Set<Signal>>;
+    multiSignals: MultiSignals;
     /**
      * List of rules of the automaton
      * (the rules are executed on each cell in the order they appear in the list)
      */
-    rules: Rule[];
-
-    instantRules: Rule[];
+    rules: NextStepRule[];
+    /**
+     * List of "rewrite rules". The rewrite rules are special rules that are
+     * applied directly to the current configuration (same time step).
+     * They should only be used either to set up the initial configuration, or
+     * to simplify some rules. In order to represent something that can be done
+     * with regular CA rules, rewrite rules should only depend on signals in
+     * the 0-cell and produce outputs on that cell only.
+     */
+    rewriteRules: RewriteRule[];
     /**
      * List of strings representing the rules. Used to avoid duplicate rules.
      */
@@ -38,79 +41,156 @@ export default class Automaton {
      */
     maxNeighbor: Vector;
 
-    constructor(
-        rules: Rule[] = [],
-        multiSignals: Map<Signal, Set<Signal>> = new Map(),
-    ) {
-        this.rules = [];
-        this.instantRules = [];
-        this.ruleNames = new Set();
-        for (const rule of rules) {
-            if (rule.condition.isAlwaysFalse()) {
-                // skip rules that never apply
-                continue;
-            }
+    constructor(automaton?: Automaton) {
+        if (automaton === undefined) {
+            this.rules = [];
+            this.rewriteRules = [];
+            this.ruleNames = new Set();
+            this.multiSignals = new Map();
+            this.signals = new Set();
+            this.minNeighbor = new Vector();
+            this.maxNeighbor = new Vector();
+        } else {
+            this.rules = [...automaton.rules];
+            this.rewriteRules = [...automaton.rewriteRules];
+            this.ruleNames = new Set(automaton.ruleNames);
+            this.multiSignals = new Map(automaton.multiSignals);
+            this.signals = new Set(automaton.signals);
+            this.minNeighbor = automaton.minNeighbor;
+            this.maxNeighbor = automaton.maxNeighbor;
+        }
+    }
 
-            const conditionName = rule.condition.toString();
-            const ruleName = rule.toString();
-            if (this.ruleNames.has(ruleName)) {
-                // skip duplicate rules
-                continue;
-            }
+    clone(): Automaton {
+        return new Automaton(this);
+    }
 
-            // check if the rule should be merged with an existing rule having same condition
-            let didMerge = false;
-            for (const [i, otherRule] of this.rules.entries()) {
-                if (otherRule.condition.toString() === conditionName) {
-                    // add outputs to existing rule
-                    const newOutputs = [...otherRule.outputs];
-                    for (const output of rule.outputs) {
-                        if (!newOutputs.some((o) => o.equals(output))) {
-                            newOutputs.push(output);
-                        }
-                    }
-                    const mergedRule = new Rule(rule.condition, newOutputs);
-                    this.rules.splice(i, 1, mergedRule);
-                    this.ruleNames.delete(otherRule.toString());
-                    this.ruleNames.add(mergedRule.toString());
-                    didMerge = true;
-                    break;
-                }
-            }
-            // if the rule was not merged, add it to the list
-            if (!didMerge) {
-                this.rules.push(rule);
-                this.ruleNames.add(ruleName);
-            }
+    addNextStepRule(rule: NextStepRule): void {
+        if (rule.condition.isAlwaysFalse()) {
+            // skip rules that never apply
+            return;
         }
 
-        this.multiSignals = multiSignals;
-        this.signals = new Set();
+        const conditionName = rule.condition.toString();
+        const ruleName = rule.toString();
+        if (this.ruleNames.has(ruleName)) {
+            // skip duplicate rules
+            return;
+        }
+
+        // check if the rule should be merged with an existing rule having same condition
+        let didMerge = false;
+        for (const [i, otherRule] of this.rules.entries()) {
+            if (otherRule.condition.toString() === conditionName) {
+                // add outputs to existing rule
+                const newOutputs = [...otherRule.outputs];
+                for (const output of rule.outputs) {
+                    if (!newOutputs.some((o) => o.equals(output))) {
+                        newOutputs.push(output);
+                    }
+                }
+                const mergedRule = new NextStepRule(rule.condition, newOutputs);
+                this.rules.splice(i, 1, mergedRule);
+                this.ruleNames.delete(otherRule.toString());
+                this.ruleNames.add(mergedRule.toString());
+                didMerge = true;
+                break;
+            }
+        }
+        // if the rule was not merged, add it to the list
+        if (!didMerge) {
+            this.rules.push(rule);
+            this.ruleNames.add(ruleName);
+        }
+
+        // update signals, minNeighbor and maxNeighbor
+        for (const signal of rule.getSignals()) {
+            this.signals.add(signal);
+        }
+        for (const literal of rule.condition.getLiterals()) {
+            this.minNeighbor = Vector.min(this.minNeighbor, literal.position);
+            this.maxNeighbor = Vector.max(this.maxNeighbor, literal.position);
+        }
+    }
+
+    addRewriteRule(rule: RewriteRule): void {
+        if (rule.condition.isAlwaysFalse()) {
+            // skip rules that never apply
+            return;
+        }
+
+        const conditionName = rule.condition.toString();
+        const ruleName = rule.toString();
+        if (this.ruleNames.has(ruleName)) {
+            // skip duplicate rules
+            return;
+        }
+
+        // check if the rule should be merged with an existing rule having same condition
+        let didMerge = false;
+        for (const [i, otherRule] of this.rewriteRules.entries()) {
+            if (otherRule.condition.toString() === conditionName) {
+                // add outputs to existing rule
+                const newOutputs = [...otherRule.outputs];
+                for (const output of rule.outputs) {
+                    if (!newOutputs.some((o) => o.equals(output))) {
+                        newOutputs.push(output);
+                    }
+                }
+                const mergedRule = new RewriteRule(rule.condition, newOutputs);
+                this.rewriteRules.splice(i, 1, mergedRule);
+                this.ruleNames.delete(otherRule.toString());
+                this.ruleNames.add(mergedRule.toString());
+                didMerge = true;
+                break;
+            }
+        }
+        // if the rule was not merged, add it to the list
+        if (!didMerge) {
+            this.rewriteRules.push(rule);
+            this.ruleNames.add(ruleName);
+        }
+
+        // update signals
+        for (const signal of rule.getSignals()) {
+            this.signals.add(signal);
+        }
+    }
+
+    addRuleset(ruleset: Ruleset): void {
+        for (const rule of ruleset.rewrite) {
+            this.addRewriteRule(rule);
+        }
+        for (const rule of ruleset.nextStep) {
+            this.addNextStepRule(rule);
+        }
+    }
+
+    addRules(rules: Rule[]): void {
+        this.addRuleset(Rule.makeRuleset(rules));
+    }
+
+    addMultiSignal(signal: Signal, subSignals: Set<Signal>): void {
+        this.multiSignals.set(signal, subSignals);
+        this.signals.add(signal);
+        for (const subSignal of subSignals) {
+            this.signals.add(subSignal);
+        }
+    }
+
+    addMultiSignals(multiSignals: MultiSignals): void {
+        for (const [signal, subSignals] of multiSignals.entries()) {
+            this.addMultiSignal(signal, subSignals);
+        }
+    }
+
+    updateMinMaxNeighbor(): void {
         this.minNeighbor = new Vector();
         this.maxNeighbor = new Vector();
-
-        // parse rules to update signals, minNeighbor and maxNeighbor
         for (const rule of this.rules) {
             for (const literal of rule.condition.getLiterals()) {
-                this.minNeighbor = Vector.min(
-                    this.minNeighbor,
-                    literal.position,
-                );
-                this.maxNeighbor = Vector.max(
-                    this.maxNeighbor,
-                    literal.position,
-                );
-            }
-
-            for (const signal of rule.getSignals()) {
-                this.signals.add(signal);
-            }
-        }
-
-        for (const [signal, subSignals] of this.multiSignals.entries()) {
-            this.signals.add(signal);
-            for (const subSignal of subSignals) {
-                this.signals.add(subSignal);
+                this.minNeighbor.mutateMin(literal.position);
+                this.maxNeighbor.mutateMax(literal.position);
             }
         }
     }
@@ -147,133 +227,10 @@ export default class Automaton {
      * @param inputString a string describing the rules to add to the automaton
      * @returns a new Automaton with the added rules
      */
-    addRulesFromString(inputString: string): Automaton {
-        return Automaton.newFromString(
-            inputString,
-            this.rules,
-            this.multiSignals,
-        );
-    }
-
-    /**
-     * Adds rules to the automaton from a string describing the rules.
-     * The string is parsed with the grammar defined in grammar.ne
-     *
-     * @param inputString a string describing the rules to add to the automaton
-     * @returns a new Automaton with the added rules
-     */
-    static newFromString(
-        inputString: string,
-        prevRules: Rule[] = [],
-        multiSignals: Map<Signal, Set<Signal>> = new Map(),
-    ): Automaton {
-        let context = new EvalContext(new Map(multiSignals));
-        const parser = new nearley.Parser(
-            nearley.Grammar.fromCompiled(grammar),
-        );
-        try {
-            parser.feed(inputString);
-            if (parser.results.length !== 1) {
-                throw new Error("Ambiguous grammar!");
-            }
-        } catch (e) {
-            console.log(e);
-        }
-        const outputLines = parser.results[0] as ParsedLine[];
-        const functionsStack: {
-            name: string | undefined;
-            parameters: string[];
-            rules: Rule[];
-        }[] = [
-            {
-                name: undefined,
-                parameters: [],
-                rules: [],
-            },
-        ];
-        let rules = functionsStack[0].rules;
-        const conditionsStack: { condition: Clause; indent: number }[] = [];
-        for (const line of outputLines) {
-            if (line.type !== "empty_line") {
-                // remove irrelevant conditions from stack
-                while (
-                    conditionsStack.length > 0 &&
-                    conditionsStack[0].indent >= line.indent
-                ) {
-                    conditionsStack.shift();
-                }
-            }
-            switch (line.type) {
-                case "rule_line": {
-                    let condition: Clause;
-                    if (line.condition !== undefined) {
-                        if (conditionsStack.length === 0) {
-                            condition = line.condition;
-                        } else {
-                            condition = new Conjunction([
-                                conditionsStack[0].condition,
-                                line.condition,
-                            ]);
-                        }
-                        conditionsStack.unshift({
-                            condition,
-                            indent: line.indent,
-                        });
-                    } else {
-                        condition = conditionsStack[0].condition;
-                    }
-                    if (line.outputs !== undefined) {
-                        rules.push(new Rule(condition, line.outputs));
-                    }
-                    break;
-                }
-                case "begin_function": {
-                    functionsStack.unshift({
-                        name: line.function_name,
-                        parameters: line.parameters,
-                        rules: [],
-                    });
-                    rules = functionsStack[0].rules;
-                    break;
-                }
-                case "end_function": {
-                    const functionData = functionsStack.shift(); // pop stack frame
-                    if (
-                        functionData === undefined ||
-                        functionData.name === undefined
-                    ) {
-                        throw new Error("Not currently in a function");
-                    }
-                    const transformation = transformations.get(
-                        functionData.name,
-                    );
-                    if (transformation === undefined) {
-                        throw new Error(
-                            `Unknown transformation: ${functionData.name}`,
-                        );
-                    }
-
-                    const { rules: newRules, context: newContext } =
-                        transformation(rules, context, functionData.parameters);
-
-                    context = newContext;
-                    rules = functionsStack[0].rules;
-                    rules.push(...newRules);
-                    break;
-                }
-                case "multi_signal": {
-                    context.multiSignals.set(line.signal, new Set(line.values));
-                    break;
-                }
-                case "empty_line":
-                    break;
-            }
-        }
-        if (functionsStack.length > 1) {
-            throw new Error("Function not closed");
-        }
-
-        return new Automaton([...prevRules, ...rules], context.multiSignals);
+    addRulesFromString(inputString: string): void {
+        const { rules, multiSignals } = Rule.parseRulesFromString(inputString);
+        this.addRules(rules);
+        this.addMultiSignals(multiSignals);
     }
 
     /**
@@ -287,29 +244,14 @@ export default class Automaton {
     }
 
     /**
-     * Adds a list of rules to the automaton
-     *
-     * @param rules list of rules to add
-     * @returns a new Automaton with the added rules
-     */
-    addRules(rules: Rule[]): Automaton {
-        if (rules.length === 0) {
-            return this;
-        }
-        return new Automaton([...this.rules, ...rules], this.multiSignals);
-    }
-
-    /**
      * Deletes a rule from the automaton
      *
      * @param rule the rule to delete
      * @returns a new Automaton without the rule
      */
-    deleteRule(rule: Rule): Automaton {
-        return new Automaton(
-            this.rules.filter((r) => r !== rule),
-            this.multiSignals,
-        );
+    deleteRule(rule: Rule): void {
+        this.rules = this.rules.filter((r) => r !== rule);
+        this.rewriteRules = this.rewriteRules.filter((r) => r !== rule);
     }
 
     /**
@@ -317,28 +259,47 @@ export default class Automaton {
      *
      * @param oldRule the rule to replace
      * @param newRules the list of rules to replace it with
-     * @returns a new Automaton with the rule replaced
      */
-    replaceRule(oldRule: Rule, newRules: Rule[]) {
-        const newRulesNames = new Set(newRules.map((r) => r.toString()));
-        if (newRulesNames.has(oldRule.toString())) {
+    replaceRule(oldRule: Rule, newRules: Rule[]): void {
+        const newRuleset = Rule.makeRuleset(newRules);
+        const newNextStepRulesNames = new Set(
+            newRuleset.nextStep.map((r) => r.toString()),
+        );
+        const newRewriteRulesNames = new Set(
+            newRuleset.rewrite.map((r) => r.toString()),
+        );
+        if (
+            newNextStepRulesNames.has(oldRule.toString()) ||
+            newRewriteRulesNames.has(oldRule.toString())
+        ) {
             // keep the old rule
-            return this.addRules(newRules.filter((r) => !this.hasRule(r)));
+            this.addRuleset(newRuleset);
+        } else {
+            this.rules = this.rules.filter((r) => r !== oldRule);
+            this.rules.push(...newRuleset.nextStep);
+            this.rewriteRules = this.rewriteRules.filter((r) => r !== oldRule);
+            this.rewriteRules.push(...newRuleset.rewrite);
         }
-
-        const resultingRules = [];
-        for (const rule of this.rules) {
-            if (rule !== oldRule) {
-                resultingRules.push(rule);
-            } else {
-                resultingRules.push(...newRules);
-            }
-        }
-        return new Automaton(resultingRules, this.multiSignals);
     }
 
     getDimension(): number {
         return Math.max(...this.rules.map((rule) => rule.getDimension()), 0);
+    }
+
+    applyRewriteRules(config: Configuration) {
+        const evalContext = this.getEvalContext();
+        for (const rule of this.rewriteRules) {
+            for (const c of config.iterPositions()) {
+                if (rule.condition.eval(config, c, evalContext)) {
+                    rule.outputs.forEach((output) => {
+                        config.addSignalAt(
+                            Vector.add(c, output.position),
+                            output.signal,
+                        );
+                    });
+                }
+            }
+        }
     }
 
     applyRules(config: Configuration): Configuration {
@@ -348,11 +309,11 @@ export default class Automaton {
         );
 
         const evalContext = this.getEvalContext();
-        for (const c of inputConfiguration.iterPositionsWithNeighborhood(
-            this.minNeighbor,
-            this.maxNeighbor,
-        )) {
-            for (const rule of this.rules) {
+        for (const rule of this.rules) {
+            for (const c of inputConfiguration.iterPositionsWithNeighborhood(
+                this.minNeighbor,
+                this.maxNeighbor,
+            )) {
                 if (rule.condition.eval(inputConfiguration, c, evalContext)) {
                     rule.outputs.forEach((output) => {
                         outputConfiguration.addSignalAt(
@@ -363,6 +324,7 @@ export default class Automaton {
                 }
             }
         }
+        this.applyRewriteRules(outputConfiguration);
         return outputConfiguration;
     }
 
@@ -425,15 +387,20 @@ export default class Automaton {
         nbSteps: number,
     ): Configuration[] {
         const diagram = [];
-        diagram.push(initialConfiguration.clone());
+        const configuration = initialConfiguration.clone();
+        this.applyRewriteRules(configuration);
+        diagram.push(configuration);
         for (let t = 0; t < nbSteps; t++) {
             diagram.push(this.applyRules(diagram[t]));
         }
         return diagram;
     }
 
-    replaceSignal(oldSignal: Signal, newSignal: Signal): Automaton {
-        const newRules = this.rules.map((rule) =>
+    replaceSignal(oldSignal: Signal, newSignal: Signal): void {
+        this.rules = this.rules.map((rule) =>
+            rule.replaceSignal(oldSignal, newSignal),
+        );
+        this.rewriteRules = this.rewriteRules.map((rule) =>
             rule.replaceSignal(oldSignal, newSignal),
         );
         const newMultiSignals = new Map(this.multiSignals);
@@ -442,14 +409,15 @@ export default class Automaton {
             newMultiSignals.delete(oldSignal);
             newMultiSignals.set(newSignal, subSignals!);
         }
-        for (const subSignals of newMultiSignals.values()) {
+        for (const [signal, subSignals] of newMultiSignals.entries()) {
             if (subSignals.has(oldSignal)) {
-                subSignals.delete(oldSignal);
-                subSignals.add(newSignal);
+                const newSubSignals = new Set(subSignals);
+                newSubSignals.delete(oldSignal);
+                newSubSignals.add(newSignal);
+                newMultiSignals.set(signal, newSubSignals);
             }
         }
-
-        return new Automaton(newRules, newMultiSignals);
+        this.multiSignals = newMultiSignals;
     }
 
     makeDependencyGraph(): DirectedGraph<Signal> {

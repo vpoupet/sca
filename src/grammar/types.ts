@@ -1,5 +1,5 @@
+import type { RuleOutput } from "@/classes/Rule.ts";
 import Clause from "../classes/Clause.ts";
-import { RuleOutput } from "../classes/Rule.ts";
 import { type Signal } from "../types.ts";
 
 export interface Line {

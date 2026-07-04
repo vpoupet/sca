@@ -113,7 +113,7 @@ class RuleGrid {
             }
             const position = Vector.add(c, this.shift);
             cell.signals.forEach((signal) => {
-                const ruleOutput = new RuleOutput(position, signal);
+                const ruleOutput = new RuleOutput(signal, position);
                 outputs.push(ruleOutput);
             });
         }

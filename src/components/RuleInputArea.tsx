@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import Automaton from "../classes/Automaton";
 import { Button } from "./ui/button";
+import Rule from "@/classes/Rule";
 
 interface RuleInputAreaProps {
     automaton: Automaton;
@@ -14,7 +15,12 @@ export default function RuleInputArea(props: RuleInputAreaProps) {
     function addRules() {
         if (textAreaRef.current) {
             const rulesText = textAreaRef.current.value;
-            setAutomaton(automaton.addRulesFromString(rulesText));
+            const { rules, multiSignals } =
+                Rule.parseRulesFromString(rulesText);
+            const newAutomaton = automaton.clone();
+            newAutomaton.addRules(rules);
+            newAutomaton.addMultiSignals(multiSignals);
+            setAutomaton(newAutomaton);
         }
     }
 
@@ -35,10 +41,10 @@ export default function RuleInputArea(props: RuleInputAreaProps) {
                 placeholder="Enter rules here"
             />
             <div className="flex flex-row justify-center w-full gap-2">
-                <Button variant="destructive" onClick={clearTextArea}>Clear</Button>
-                <Button onClick={addRules}>
-                    Add rules
+                <Button variant="destructive" onClick={clearTextArea}>
+                    Clear
                 </Button>
+                <Button onClick={addRules}>Add rules</Button>
             </div>
         </div>
     );

@@ -1,24 +1,24 @@
+!Fire:
+    Init: 0/0.Wall 0/0.General_L 31/0.Wall
+    Wall: Wall
 
-Init: 0/0.Wall 0/0.General_L 31/0.Wall
-Wall: Wall
+    @begin mirror("_L", "_R")
+    Slow0_R: Slow1_R
+    Slow1_R: Slow2_R
+    Slow2_R:
+        ![1.PreBounce_L 2.Bounce_L Bounce_L 1.Wall]: 1.Slow0_R
+        ([1.PreBounce_L 2.Bounce_L] !1.Wall): 1.General_L 1.General_R 1.Wall
+        (Bounce_L !Wall !1.Wall): General_R 1.General_L Wall 1.Wall
 
-@begin mirror("_L", "_R")
-Slow0_R: Slow1_R
-Slow1_R: Slow2_R
-Slow2_R:
-    ![1.PreBounce_L 2.Bounce_L Bounce_L 1.Wall]: 1.Slow0_R
-    ([1.PreBounce_L 2.Bounce_L] !1.Wall): 1.General_L 1.General_R 1.Wall
-    (Bounce_L !Wall !1.Wall): General_R 1.General_L Wall 1.Wall
+    Fast_R:
+        !1.Wall: 1.Fast_R
+        1.Wall: 0.PreBounce_L
+    PreBounce_L:
+        Bounce_L
+    Bounce_L:
+        ![Slow2_R -2.Slow2_R -1.Wall]: -1.Bounce_L
 
-Fast_R:
-    !1.Wall: 1.Fast_R
-    1.Wall: 0.PreBounce_L
-PreBounce_L:
-    Bounce_L
-Bounce_L:
-    ![Slow2_R -2.Slow2_R -1.Wall]: -1.Bounce_L
-
-General_L:
-    1.Wall: Fire 1.Fire
-    !1.Wall: 1.Fast_R 0.Slow1_R
-@end
+    General_L:
+        1.Wall: Fire 1.Fire
+        !1.Wall: 1.Fast_R 0.Slow1_R
+    @end
