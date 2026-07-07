@@ -1,7 +1,13 @@
-import { useRef } from "react";
+import CodeMirror from "@uiw/react-codemirror";
+import { useState } from "react";
 import Automaton from "../classes/Automaton";
 import { Button } from "./ui/button";
 import Rule from "@/classes/Rule";
+import {
+    ruleEditorTheme,
+    ruleLanguage,
+    ruleSyntaxHighlighting,
+} from "./ruleLanguage";
 
 interface RuleInputAreaProps {
     automaton: Automaton;
@@ -10,35 +16,38 @@ interface RuleInputAreaProps {
 
 export default function RuleInputArea(props: RuleInputAreaProps) {
     const { automaton, setAutomaton } = props;
-    const textAreaRef = useRef<HTMLTextAreaElement>(null);
+    const [rulesText, setRulesText] = useState("");
 
     function addRules() {
-        if (textAreaRef.current) {
-            const rulesText = textAreaRef.current.value;
-            const { rules, multiSignals } =
-                Rule.parseRulesFromString(rulesText);
-            const newAutomaton = automaton.clone();
-            newAutomaton.addRules(rules);
-            newAutomaton.addMultiSignals(multiSignals);
-            setAutomaton(newAutomaton);
-        }
+        const { rules, multiSignals } = Rule.parseRulesFromString(rulesText);
+        const newAutomaton = automaton.clone();
+        newAutomaton.addRules(rules);
+        newAutomaton.addMultiSignals(multiSignals);
+        setAutomaton(newAutomaton);
     }
 
     function clearTextArea() {
-        if (textAreaRef.current) {
-            textAreaRef.current.value = "";
-        }
+        setRulesText("");
     }
 
     return (
         <div>
-            <textarea
-                id="rulesText"
-                className="w-full p-2 font-mono bg-white border border-gray-400 shadow-md"
-                cols={60}
-                rows={16}
-                ref={textAreaRef}
+            <CodeMirror
+                value={rulesText}
+                onChange={setRulesText}
                 placeholder="Enter rules here"
+                basicSetup={{
+                    foldGutter: false,
+                    highlightActiveLine: false,
+                    highlightActiveLineGutter: false,
+                }}
+                extensions={[
+                    ruleLanguage,
+                    ruleSyntaxHighlighting,
+                    ruleEditorTheme,
+                ]}
+                minHeight="24rem"
+                className="w-full overflow-hidden border border-gray-400 bg-white font-mono shadow-md"
             />
             <div className="flex flex-row justify-center w-full gap-2">
                 <Button variant="destructive" onClick={clearTextArea}>

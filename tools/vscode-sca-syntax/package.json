@@ -1,0 +1,36 @@
+{
+  "name": "sca-syntax",
+  "displayName": "SCA Syntax",
+  "description": "Syntax highlighting for SCA cellular automaton rule files.",
+  "version": "0.0.1",
+  "publisher": "local",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "sca",
+        "aliases": [
+          "Signal Cellular Automata",
+          "SCA",
+          "sca"
+        ],
+        "extensions": [
+          ".sca"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "sca",
+        "scopeName": "source.sca",
+        "path": "./syntaxes/sca.tmLanguage.json"
+      }
+    ]
+  }
+}
