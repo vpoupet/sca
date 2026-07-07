@@ -2,7 +2,7 @@ import Automaton from "../classes/Automaton.ts";
 import { Configuration } from "../classes/Configuration.ts";
 import "../style/Cell.scss";
 
-import { useState } from "react";
+import { useLayoutEffect, useReducer } from "react";
 import type { IndexedConfiguration, SettingsType, Signal } from "../types.ts";
 import CellComponent from "./CellComponent.tsx";
 import { Config2DComponent } from "./Config2DComponent.tsx";
@@ -17,6 +17,66 @@ type Props = {
     colorMap: Map<Signal, string>;
 };
 
+type DiagramState = {
+    currentStep: number;
+    configurationHistory: IndexedConfiguration[];
+};
+
+type DiagramAction =
+    | {
+          type: "changeStep";
+          delta: number;
+          automaton: Automaton;
+      }
+    | {
+          type: "resetHistory";
+          automaton: Automaton;
+          initialConfiguration: Configuration;
+      };
+
+function makeConfigurationHistory(
+    automaton: Automaton,
+    initialConfiguration: Configuration,
+    currentStep: number,
+): IndexedConfiguration[] {
+    const configuration = initialConfiguration.clone();
+    automaton.applyRewriteRules(configuration);
+
+    return automaton.getHistoryAtTime(currentStep, [
+        {
+            time: 0,
+            configuration,
+        },
+    ]);
+}
+
+function diagramReducer(
+    state: DiagramState,
+    action: DiagramAction,
+): DiagramState {
+    switch (action.type) {
+        case "changeStep": {
+            const currentStep = Math.max(state.currentStep + action.delta, 0);
+            return {
+                currentStep,
+                configurationHistory: action.automaton.getHistoryAtTime(
+                    currentStep,
+                    state.configurationHistory,
+                ),
+            };
+        }
+        case "resetHistory":
+            return {
+                currentStep: state.currentStep,
+                configurationHistory: makeConfigurationHistory(
+                    action.automaton,
+                    action.initialConfiguration,
+                    state.currentStep,
+                ),
+            };
+    }
+}
+
 export default function Diagram2D({
     automaton,
     initialConfiguration,
@@ -24,30 +84,33 @@ export default function Diagram2D({
     // settings,
     colorMap,
 }: Props) {
-    const [currentStep, setCurrentStep] = useState(0);
-    const [configurationHistory, setConfigurationHistory] = useState<
-        IndexedConfiguration[]
-    >([
-        {
-            time: 0,
-            configuration: initialConfiguration,
-        },
-    ]);
+    const [{ currentStep, configurationHistory }, dispatch] = useReducer(
+        diagramReducer,
+        { automaton, initialConfiguration },
+        ({ automaton, initialConfiguration }) => ({
+            currentStep: 0,
+            configurationHistory: makeConfigurationHistory(
+                automaton,
+                initialConfiguration,
+                0,
+            ),
+        }),
+    );
+
+    useLayoutEffect(() => {
+        dispatch({
+            type: "resetHistory",
+            automaton,
+            initialConfiguration,
+        });
+    }, [automaton, initialConfiguration]);
 
     function incrementStep() {
-        const newStep = currentStep + 1;
-        setCurrentStep(newStep);
-        setConfigurationHistory(
-            automaton.getHistoryAtTime(newStep, configurationHistory),
-        );
+        dispatch({ type: "changeStep", delta: 1, automaton });
     }
 
     function decrementStep() {
-        const newStep = Math.max(currentStep - 1, 0);
-        setCurrentStep(newStep);
-        setConfigurationHistory(
-            automaton.getHistoryAtTime(newStep, configurationHistory),
-        );
+        dispatch({ type: "changeStep", delta: -1, automaton });
     }
 
     return (
