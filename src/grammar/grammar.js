@@ -137,7 +137,7 @@ let ParserRules = [
         new Literal(Symbol.for(s), new Vector(), true) },
     {"name": "OUTPUT", "symbols": ["SIGNAL_NAME"], "postprocess": ([s]) => new RuleOutput(Symbol.for(s), new Vector([]), 1)},
     {"name": "OUTPUT", "symbols": ["POSITION_LIST", {"literal":"."}, "SIGNAL_NAME"], "postprocess": ([pos, , s]) => new RuleOutput(Symbol.for(s), new Vector(pos), 1)},
-    {"name": "OUTPUT", "symbols": [{"literal":"/"}, "INT", {"literal":"."}, "SIGNAL_NAME"], "postprocess": ([, step, , s]) => new RuleOutputWithTimeStep(Symbol.for(s), new Vector([]), step)},
+    {"name": "OUTPUT", "symbols": [{"literal":"/"}, "INT", {"literal":"."}, "SIGNAL_NAME"], "postprocess": ([, step, , s]) => new RuleOutput(Symbol.for(s), new Vector([]), step)},
     {"name": "OUTPUT", "symbols": ["POSITION_LIST", {"literal":"/"}, "INT", {"literal":"."}, "SIGNAL_NAME"], "postprocess":  ([pos, , step, , s]) =>
         new RuleOutput(Symbol.for(s), new Vector(pos), step) },
     {"name": "OUTPUTS_LIST", "symbols": ["OUTPUT"]},
