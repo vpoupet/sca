@@ -34,7 +34,7 @@ export default function RulesList(props: RulesListProps) {
         settings,
         colorMap,
     } = props;
-    const [isExpanded, setIsExpanded] = useState(true);
+    const [isExpanded, setIsExpanded] = useState(false);
 
     function deleteRule(rule: Rule) {
         const newAutomaton = automaton.clone();

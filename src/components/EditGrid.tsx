@@ -164,7 +164,7 @@ export default function EditGrid(props: EditGridProps) {
     });
 
     return (
-        <div className="flex flex-col items-center gap-4 p-2 bg-white border border-gray-300 shadow-md">
+        <div className="flex flex-col items-center gap-4 p-2 bg-white border border-gray-300 shadow-md max-h-200 overflow-scroll">
             <div className="flex flex-col items-center gap-2 p-2 bg-gray-100 border border-gray-300 shadow-md w-fit">
                 <div className="flex items-center gap-4">
                     <div className="flex flex-col w-32 gap-2">

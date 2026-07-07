@@ -43,7 +43,7 @@ export default function SignalsList({
     setColorPickingSignal,
     setSignalColor,
 }: SignalsListProps) {
-    const [isExpanded, setIsExpanded] = useState(true);
+    const [isExpanded, setIsExpanded] = useState(false);
     const [newSignalValue, setNewSignalValue] = useState("");
     const signalsList = automaton.getSignalsList(extraSignalsSet);
 
@@ -142,7 +142,7 @@ export default function SignalsList({
                     <Button onClick={toggleAllSignals} variant="secondary" className="w-48">
                         Toggle selection
                     </Button>
-                    <div className="flex flex-col w-fit">
+                    <div className="flex flex-row w-fit flex-wrap gap-x-4 gap-y-1">
                         {signalsList.map((signal) => (
                             <SignalsListItem
                                 key={signal.description}

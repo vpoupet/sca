@@ -164,21 +164,23 @@ export default function App() {
                 setColorPickingSignal={setColorPickingSignal}
                 setSignalColor={setSignalColor}
             />
-            <div className="flex gap-4">
-                <EditGrid
-                    grid={grid}
-                    setGrid={setGrid}
-                    settings={settings}
-                    automaton={automaton}
-                    setAutomaton={setAutomaton}
-                    extraSignalsSet={extraSignalsSet}
-                    activeInputCells={activeInputCells}
-                    setActiveInputCells={setActiveInputCells}
-                    activeOutputCells={activeOutputCells}
-                    setActiveOutputCells={setActiveOutputCells}
-                    colorMap={colorMap}
-                />
-                <div className="flex flex-col gap-1">
+            <div className="flex flex-col lg:flex-row gap-4">
+                <div className="lg:w-1/2">
+                    <EditGrid
+                        grid={grid}
+                        setGrid={setGrid}
+                        settings={settings}
+                        automaton={automaton}
+                        setAutomaton={setAutomaton}
+                        extraSignalsSet={extraSignalsSet}
+                        activeInputCells={activeInputCells}
+                        setActiveInputCells={setActiveInputCells}
+                        activeOutputCells={activeOutputCells}
+                        setActiveOutputCells={setActiveOutputCells}
+                        colorMap={colorMap}
+                    />
+                </div>
+                <div className="flex flex-col gap-1 lg:w-1/2">
                     <RuleInputArea
                         automaton={automataHistory[automatonIndex]}
                         setAutomaton={setAutomaton}
