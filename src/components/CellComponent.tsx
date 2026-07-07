@@ -44,23 +44,24 @@ export default function CellComponent(props: CellComponentProps) {
             <TooltipPrimitive.Root>
             <TooltipTrigger asChild>
                 <div
-                    className={`cell aspect-square flex-1 border-gray-200 border ${
+                    className={`cell aspect-square flex-1 border-gray-200 border overflow-hidden ${
                         isActive ? "bg-gray-300" : "bg-white"
                     } ${className}`}
                     onClick={onClick}
                 >
-                    {signals.map((signal) => {
-                        return (
-                            <div
-                                key={Symbol.keyFor(signal)}
-                                style={{
-                                    backgroundColor:
-                                        colorMap.get(signal) ?? "#000",
-                                }}
-                                className="st"
-                            />
-                        );
-                    })}
+                    {signals
+                        .map((signal) => {
+                            return (
+                                <div
+                                    key={Symbol.keyFor(signal)}
+                                    style={{
+                                        backgroundColor:
+                                            colorMap.get(signal) ?? "#000",
+                                    }}
+                                    className="st"
+                                />
+                            );
+                        })}
                     {negatedSignals.map((signal) => {
                         return (
                             <div
