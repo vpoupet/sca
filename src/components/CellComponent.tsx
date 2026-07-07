@@ -1,7 +1,8 @@
 import { TooltipTrigger } from "@radix-ui/react-tooltip";
+import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import Cell from "../classes/Cell";
 import type { Signal } from "../types";
-import { Tooltip, TooltipContent } from "./ui/tooltip";
+import { TooltipContent, TooltipProvider } from "./ui/tooltip";
 import SignalName from "./SignalName";
 
 interface CellComponentProps {
@@ -39,7 +40,8 @@ export default function CellComponent(props: CellComponentProps) {
     }
 
     return (
-        <Tooltip>
+        <TooltipProvider disableHoverableContent>
+            <TooltipPrimitive.Root>
             <TooltipTrigger asChild>
                 <div
                     className={`cell aspect-square flex-1 border-gray-200 border ${
@@ -90,6 +92,7 @@ export default function CellComponent(props: CellComponentProps) {
                     />
                 ))}
             </TooltipContent>
-        </Tooltip>
+            </TooltipPrimitive.Root>
+        </TooltipProvider>
     );
 }
