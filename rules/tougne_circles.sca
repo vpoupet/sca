@@ -1,0 +1,156 @@
+@begin mirror_diag("_H", "_V")
+
+# ============================================================
+# Macros
+# ============================================================
+
+hR_H:
+  Next_R_H 1,0.Prev_L_H 1,0.HPoint_H
+  ([K01_H DH0_H] HPoint_V): Next_R_V 0,1.Prev_L_V 0,1.HPoint_V
+  PatternScanner_H: 1,0.PatternScanner_H
+
+hUR_H:
+  Next_UR_H 1,1.Prev_DL_H 1,1.HPoint_H 1,0.S_DR_H
+  ([K01_H DH0_H] HPoint_V): Next_UR_V 1,1.Prev_DL_V 1,1.HPoint_V
+  PatternScanner_H: 1,1.PatternScanner_H
+
+# ============================================================
+# 0. Origin initialization
+# ============================================================
+
+Init:
+    /0.Diagonal
+    /0.Axis_H
+    /0.KH0Gen0_H
+    /0.K01_H
+    /0.DH0_H
+    /0.H1Init0_H
+    /0.PatternSeed_H
+    1,0.AxisCursor_H  # delayed one step
+
+# ============================================================
+# I. Axes, zone-boundary lines, and zones of the plane
+# ============================================================
+
+# Mark the diagonal and emit the lower/upper heart-zone marker
+Diagonal: Diagonal 1,1.Diagonal 1,1.K01_H
+
+# X-axis
+Axis_H: Axis_H 1,0.Axis_H
+
+# Cursor along the axis. The two-state delay avoids
+# generating H1 directly from the axis.
+AxisCursor_H: 1,0.AxisCursor_H 1,0.HPoint_V
+
+# Boundary line y = 3x/4, and the DH0 zone below it.
+KH0Gen0_H: 1,0.KH0Gen1_H 1,0.DH0_H
+KH0Gen1_H: 1,1.KH0Gen2_H 1,1.DH0_H
+KH0Gen2_H: 1,1.KH0Gen3_H 1,1.DH0_H 1,1.Boundary_H
+KH0Gen3_H: 1,1.KH0Gen0_H 1,1.DH0_H 1,1.PatternA_V
+
+# Boundary point where a parabola leaves K01 and enters DH0.
+Boundary_H: Boundary_H
+
+# K01 propagates right as long as DH0 has not arrived.
+K01_H: K01_H
+    !DH0_H: 1,0.K01_H
+
+DH0_H: DH0_H 1,0.DH0_H
+
+# ============================================================
+# II. Parabola drawing/link symbols
+# ============================================================
+
+Prev_DL_H: Prev_DL_H      # previous point was DL
+Prev_L_H: Prev_L_H        # previous point was L
+Next_UR_H: Next_UR_H      # next point is UR
+Next_R_H: Next_R_H        # next point is R
+
+# ============================================================
+# III. Long landings
+# ============================================================
+
+# State 17: signal moving DR; it turns to UR when it reaches the axis.
+(S_DR_H Axis_H): 1,0.S_UR_H
+(S_DR_H !Axis_H): 1,-1.S_DR_H
+
+# State 18: signal moving UR until it reaches a current H point.
+(S_UR_H !HPoint_H): 1,1.S_UR_H
+
+# State 16 + (+11 -9 -18) #hR
+(HPoint_H DH0_H !Boundary_H !S_UR_H): /0.hR_H
+
+# State 16 + (+11 -9 +18) #hUR
+(HPoint_H DH0_H !Boundary_H S_UR_H): /0.hUR_H
+
+# ============================================================
+# IV. Orthogonal bundle
+# ============================================================
+
+# State 16 + ([+11b +10b] -10 -16b -1b) #hUR
+(HPoint_H [DH0_V K01_V] !K01_H !HPoint_V !Axis_V): /0.hUR_H
+
+# State 16 + (+1b) #hR
+(HPoint_H Axis_V): /0.hR_H
+
+# ============================================================
+# V. Heart construction
+# ============================================================
+
+# State 19 marks that H must rise while constructing the heart.
+(HPoint_H !PatternA_H !PatternA_V): 0,1.HeartRaise_H
+(HPoint_H PatternA_H K01_V !K01_H !DH0_V): 0,1.HeartRaise_H
+(HPoint_H PatternA_V K01_H !K01_V !DH0_H): 0,1.HeartRaise_H
+
+# State 16 + (+10 -11 -19) #hR
+(HPoint_H K01_H !DH0_H !HeartRaise_H): /0.hR_H
+
+# State 16 + (+10 -11 +19) #hUR
+(HPoint_H K01_H !DH0_H HeartRaise_H): /0.hUR_H
+
+# ============================================================
+# VI. Manual initialization of H1 and V1
+# ============================================================
+
+# Old states 20-23.
+H1Init0_H: 0,1.H1Init1_H
+H1Init1_H: Next_R_H 1,0.Prev_L_H 1,0.H1Init2_H
+H1Init2_H: Next_UR_H 1,1.Prev_DL_H 1,1.H1Init3_H 1,0.S_DR_H 1,1.PatternScanner_H 1,1.ShortPattern_H
+H1Init3_H: Next_R_H 1,0.Prev_L_H 1,0.HPoint_H
+
+# ============================================================
+# VII. Pattern A problem
+# ============================================================
+
+Visited: Visited
+
+# State 25: scanner emitted along patterns.
+(PatternScanner_H Prev_L_H): 1,1.ShortPattern_H
+(PatternScanner_H Prev_DL_H !ShortPattern_H !LongPattern_H): 1,1.LongPattern_H
+(PatternScanner_H Prev_DL_H [ShortPattern_H LongPattern_H]): PatternScanner_H
+(PatternScanner_H Next_UR_H [!Prev_DL_H (ShortPattern_H LongPattern_H)]): 1,1.PatternScanner_H
+(PatternScanner_H Next_R_H [!Prev_DL_H (ShortPattern_H LongPattern_H)]): 1,0.PatternScanner_H
+
+# State 26: short signal.
+(ShortPattern_H [Visited !PatternANeighbor_H]): 0,1.PatternSeed_H 1,1.ShortPattern_H
+(ShortPattern_H PatternANeighbor_H !Visited): -1,0.Visited Visited 3,3/3.PatternA_H
+
+# State 27: long signal.
+(LongPattern_H [Visited !PatternA_H]): 1,1.LongPattern_H
+(LongPattern_H PatternA_H !Visited): Visited 1,0.Visited 5,5/5.PatternA_H
+
+# States 28-30.
+PatternA_H: PatternA_H 1,0.PatternANeighbor_H
+
+# States 37-38: pattern seed/scanner initialization.
+PatternSeed_H: 0,1/2.PatternSeed_H 0,1.PatternScanner_H
+
+# ============================================================
+# VIII. Join between the heart method and long-landings method
+#       on the boundary case
+# ============================================================
+
+# State 16 + (+9) #hUR
+(HPoint_H Boundary_H): /0.hUR_H
+
+@end
