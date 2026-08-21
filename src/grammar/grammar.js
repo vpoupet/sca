@@ -33,7 +33,7 @@ const lexer = moo.compile({
     la: "{",
     ra: "}",
     at: "@",
-    identifier: /[a-zA-Z_$][a-zA-Z_$0-9\-→,/]*/,
+    identifier: /[a-zA-Z_$][a-zA-Z_$0-9\-→',/]*/,
 });
 lexer.next = (next => () => {
     let tok;

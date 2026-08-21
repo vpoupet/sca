@@ -1,0 +1,11 @@
+# Marquage de la cellule centrale
+(-1.!a -1.!b [0.a 0.b]): 0.Right
+(1.!a 1.!b [0.a 0.b]): 0.Left
+0.Right:
+  ![1.Left 0.Left]: 1.Right
+  [1.Left 0.Left]: 0.Center
+0.Left:
+  ![-1.Right 0.Right]: -1.Left
+
+# Tri bulle
+a: 1.a'

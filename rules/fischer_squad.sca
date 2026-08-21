@@ -1,5 +1,5 @@
+Init: 0/0.Wall 0/0.General_L 31/0.Wall # configuration initiale
 !Fire:
-    Init: 0/0.Wall 0/0.General_L 31/0.Wall
     Wall: Wall
 
     @begin mirror("_L", "_R")
