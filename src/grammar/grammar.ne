@@ -120,8 +120,6 @@ OUTPUT -> SIGNAL_NAME
    {% ([s]) => new RuleOutput(Symbol.for(s), new Vector([]), 1) %}
 OUTPUT -> POSITION_LIST "." SIGNAL_NAME
    {% ([pos, , s]) => new RuleOutput(Symbol.for(s), new Vector(pos), 1) %}
-OUTPUT -> "/" INT "." SIGNAL_NAME
-   {% ([, step, , s]) => new RuleOutput(Symbol.for(s), new Vector([]), step) %}
 OUTPUT -> POSITION_LIST "/" INT "." SIGNAL_NAME
    {% ([pos, , step, , s]) =>
         new RuleOutput(Symbol.for(s), new Vector(pos), step) %}
