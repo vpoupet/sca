@@ -1,9 +1,9 @@
-import { TooltipTrigger } from "@radix-ui/react-tooltip";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
+import { TooltipTrigger } from "@radix-ui/react-tooltip";
 import Cell from "../classes/Cell";
 import type { Signal } from "../types";
-import { TooltipContent, TooltipProvider } from "./ui/tooltip";
 import SignalName from "./SignalName";
+import { TooltipContent, TooltipProvider } from "./ui/tooltip";
 
 interface CellComponentProps {
     cell: Cell;
@@ -31,7 +31,7 @@ export default function CellComponent(props: CellComponentProps) {
     if (signals.length === 0 && negatedSignals.length === 0) {
         return (
             <div
-                className={`cell aspect-square flex-1 border-gray-200 border ${
+                className={`cell aspect-square flex-1 max-w-10 border-gray-200 border ${
                     isActive ? "bg-gray-300" : "bg-white"
                 } ${className}`}
                 onClick={onClick}
@@ -42,15 +42,14 @@ export default function CellComponent(props: CellComponentProps) {
     return (
         <TooltipProvider disableHoverableContent>
             <TooltipPrimitive.Root>
-            <TooltipTrigger asChild>
-                <div
-                    className={`cell aspect-square flex-1 border-gray-200 border overflow-hidden ${
-                        isActive ? "bg-gray-300" : "bg-white"
-                    } ${className}`}
-                    onClick={onClick}
-                >
-                    {signals
-                        .map((signal) => {
+                <TooltipTrigger asChild>
+                    <div
+                        className={`cell aspect-square flex-1 max-w-10 border-gray-200 border overflow-hidden ${
+                            isActive ? "bg-gray-300" : "bg-white"
+                        } ${className}`}
+                        onClick={onClick}
+                    >
+                        {signals.map((signal) => {
                             return (
                                 <div
                                     key={Symbol.keyFor(signal)}
@@ -62,37 +61,37 @@ export default function CellComponent(props: CellComponentProps) {
                                 />
                             );
                         })}
-                    {negatedSignals.map((signal) => {
-                        return (
-                            <div
-                                key={"!" + Symbol.keyFor(signal)}
-                                style={{
-                                    backgroundColor:
-                                        colorMap.get(signal) ?? "#000",
-                                }}
-                                className="st neg"
-                            />
-                        );
-                    })}
-                </div>
-            </TooltipTrigger>
-            <TooltipContent className="max-w-96 w-fit flex flex-wrap gap-1">
-                {signals.map((signal) => (
-                    <SignalName
-                        key={signal.description}
-                        signal={signal}
-                        colorMap={colorMap}
-                    />
-                ))}
-                {negatedSignals.map((signal) => (
-                    <SignalName
-                        key={"!" + signal.description}
-                        signal={signal}
-                        colorMap={colorMap}
-                        isNegated={true}
-                    />
-                ))}
-            </TooltipContent>
+                        {negatedSignals.map((signal) => {
+                            return (
+                                <div
+                                    key={"!" + Symbol.keyFor(signal)}
+                                    style={{
+                                        backgroundColor:
+                                            colorMap.get(signal) ?? "#000",
+                                    }}
+                                    className="st neg"
+                                />
+                            );
+                        })}
+                    </div>
+                </TooltipTrigger>
+                <TooltipContent className="max-w-96 w-fit flex flex-wrap gap-1">
+                    {signals.map((signal) => (
+                        <SignalName
+                            key={signal.description}
+                            signal={signal}
+                            colorMap={colorMap}
+                        />
+                    ))}
+                    {negatedSignals.map((signal) => (
+                        <SignalName
+                            key={"!" + signal.description}
+                            signal={signal}
+                            colorMap={colorMap}
+                            isNegated={true}
+                        />
+                    ))}
+                </TooltipContent>
             </TooltipPrimitive.Root>
         </TooltipProvider>
     );

@@ -47,7 +47,7 @@ export default function RuleInputArea(props: RuleInputAreaProps) {
                     ruleEditorTheme,
                 ]}
                 minHeight="24rem"
-                className="w-full overflow-scroll border border-gray-400 bg-white font-mono shadow-md max-h-200"
+                className="w-full overflow-auto border border-gray-400 bg-white font-mono shadow-md max-h-200"
             />
             <div className="flex flex-row justify-center w-full gap-2 mt-2">
                 <Button variant="destructive" onClick={clearTextArea}>

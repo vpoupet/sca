@@ -1,26 +1,22 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import Automaton from "./classes/Automaton";
-import {
-    Configuration,
-    Configuration1D,
-    Configuration2D,
-} from "./classes/Configuration";
+import { Configuration } from "./classes/Configuration";
 import RuleGrid from "./classes/RuleGrid";
 import Vector from "./classes/Vector";
+import DependencyGraphsDialogs from "./components/DependencyGraphsDialogs";
 import Diagram1D from "./components/Diagram1D";
 import Diagram2D from "./components/Diagram2D";
-import DependencyGraphsDialogs from "./components/DependencyGraphsDialogs";
+import EditGrid from "./components/EditGrid";
 import RuleInputArea from "./components/RuleInputArea";
 import RulesList from "./components/RulesList";
+import SetInitialConfigurationButton from "./components/SetInitialConfigurationButton";
 import SettingsComponent from "./components/SettingsComponent";
 import SignalsList from "./components/SignalsList";
 import Heading from "./components/Typography";
 import "./style/Cell.scss";
 import { randomColor } from "./style/materialColors";
 import type { SettingsType, Signal } from "./types";
-import SetInitialConfigurationButton from "./components/SetInitialConfigurationButton";
-import EditGrid from "./components/EditGrid";
 
 const defaultSettings: SettingsType = {
     dimension: 1,
@@ -36,10 +32,15 @@ export default function App() {
         Signal | undefined
     >(undefined);
     const [colorMap, setColorMap] = useState(new Map<Signal, string>());
-    const dim = settings.dimension;
-    const v = Vector.one(dim).mult(settings.gridRadius);
+    // const dim = settings.dimension;
+    const [automataHistory, setAutomataHistory] = useState<Automaton[]>([
+        new Automaton(),
+    ]);
+    const [automatonIndex, setAutomatonIndex] = useState(0);
+    const [dimension, setDimension] = useState(1);
+    const v = Vector.one(dimension).mult(settings.gridRadius);
     const [grid, setGrid] = useState<RuleGrid>(
-        RuleGrid.withBounds(v.negated(), v, dim),
+        RuleGrid.withBounds(v.negated(), v, dimension),
     );
     const [activeInputCells, setActiveInputCells] = useState<Vector[]>([]);
     const [activeOutputCells, setActiveOutputCells] = useState<Vector[]>([]);
@@ -47,43 +48,15 @@ export default function App() {
     const [hiddenSignalsSet, setHiddenSignalsSet] = useState<Set<Signal>>(
         new Set(),
     );
-    const [automataHistory, setAutomataHistory] = useState<Automaton[]>([
-        new Automaton(),
-    ]);
-    const [automatonIndex, setAutomatonIndex] = useState(0);
 
     const [extraSignalsSet, setExtraSignalsSet] = useState<Set<Signal>>(
         new Set([Symbol.for("Init")]),
     );
 
-    function makeInitialConfiguration(
-        dimension: number,
-        nbCells: number,
-    ): Configuration {
-        if (dimension === 2) {
-            const config = Configuration2D.withSize(
-                new Vector([nbCells, nbCells]),
-            );
-            config.getCellAt(new Vector())?.addSignal(Symbol.for("Init"));
-            return config;
-        } else {
-            const config = Configuration1D.withSize(new Vector([nbCells]));
-            config.getCellAt(new Vector([0]))?.addSignal(Symbol.for("Init"));
-            return config;
-        }
-    }
-
     const [
         userDefinedInitialConfiguration,
         setUserDefinedInitialConfiguration,
     ] = useState<Configuration | null>(null);
-
-    const initialConfiguration = useMemo(() => {
-        if (userDefinedInitialConfiguration) {
-            return userDefinedInitialConfiguration;
-        }
-        return makeInitialConfiguration(settings.dimension, settings.nbCells);
-    }, [settings.dimension, settings.nbCells, userDefinedInitialConfiguration]);
 
     const automaton = automataHistory[automatonIndex];
 
@@ -107,13 +80,12 @@ export default function App() {
     }
 
     function changeIndexAutomaton(deltaIndex: number) {
-        if (
-            automatonIndex + deltaIndex < 0 ||
-            automatonIndex + deltaIndex >= automataHistory.length
-        ) {
+        const index = automatonIndex + deltaIndex;
+        if (index < 0 || index >= automataHistory.length) {
             return;
         }
-        setAutomatonIndex(automatonIndex + deltaIndex);
+        setAutomatonIndex(index);
+        setDimension(automataHistory[index].getDimension());
     }
 
     function setAutomaton(automaton: Automaton) {
@@ -131,6 +103,7 @@ export default function App() {
             setAutomataHistory([...automataHistory, automaton]);
         }
         setAutomatonIndex(automatonIndex + 1);
+        setDimension(automaton.getDimension());
     }
 
     function setSignalColor(signal: Signal, color: string) {
@@ -147,7 +120,7 @@ export default function App() {
     }
 
     return (
-        <div className="flex flex-col w-screen min-h-screen p-2 text-gray-700 bg-linear-to-b from-slate-50 to-slate-100">
+        <div className="flex flex-col min-h-screen p-2 text-gray-700 bg-linear-to-b from-slate-50 to-slate-100">
             <Heading level={1}>Signal-based cellular automata</Heading>
             <SettingsComponent settings={settings} setSettings={setSettings} />
             <DependencyGraphsDialogs automaton={automaton} />
@@ -205,20 +178,21 @@ export default function App() {
                 settings={settings}
                 colorMap={colorMap}
             />
-            {settings.dimension === 1 ? (
+            {dimension === 1 && (
                 <Diagram1D
-                    key={`1d-${initialConfiguration.id}`}
+                    key={`1d-${userDefinedInitialConfiguration?.id}`}
                     automaton={automataHistory[automatonIndex]}
-                    initialConfiguration={initialConfiguration!}
+                    initialConfiguration={userDefinedInitialConfiguration}
                     hiddenSignalsSet={hiddenSignalsSet}
                     settings={settings}
                     colorMap={colorMap}
                 />
-            ) : (
+            )}
+            {dimension === 2 && (
                 <Diagram2D
-                    key={`2d-${initialConfiguration.id}`}
+                    key={`2d-${userDefinedInitialConfiguration?.id}`}
                     automaton={automataHistory[automatonIndex]}
-                    initialConfiguration={initialConfiguration}
+                    initialConfiguration={userDefinedInitialConfiguration}
                     hiddenSignalsSet={hiddenSignalsSet}
                     settings={settings}
                     colorMap={colorMap}

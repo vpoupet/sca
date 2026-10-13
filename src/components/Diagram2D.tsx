@@ -1,21 +1,14 @@
 import Automaton from "../classes/Automaton.ts";
-import { Configuration } from "../classes/Configuration.ts";
+import { Configuration, Configuration2D } from "../classes/Configuration.ts";
 import "../style/Cell.scss";
 
-import { useLayoutEffect, useReducer } from "react";
+import Vector from "@/classes/Vector.ts";
+import { useLayoutEffect, useMemo, useReducer } from "react";
 import type { IndexedConfiguration, SettingsType, Signal } from "../types.ts";
 import CellComponent from "./CellComponent.tsx";
 import { Config2DComponent } from "./Config2DComponent.tsx";
 import Heading from "./Typography.tsx";
 import { Button } from "./ui/button.tsx";
-
-type Props = {
-    automaton: Automaton;
-    initialConfiguration: Configuration;
-    hiddenSignalsSet?: Set<Signal>;
-    settings: SettingsType;
-    colorMap: Map<Signal, string>;
-};
 
 type DiagramState = {
     currentStep: number;
@@ -77,16 +70,36 @@ function diagramReducer(
     }
 }
 
+type Props = {
+    automaton: Automaton;
+    initialConfiguration: Configuration | null;
+    hiddenSignalsSet?: Set<Signal>;
+    settings: SettingsType;
+    colorMap: Map<Signal, string>;
+};
+
 export default function Diagram2D({
     automaton,
     initialConfiguration,
     hiddenSignalsSet,
-    // settings,
+    settings,
     colorMap,
 }: Props) {
+    const effectiveInitialConfiguration = useMemo(() => {
+        if (initialConfiguration) {
+            return initialConfiguration;
+        }
+
+        const configuration = Configuration2D.withSize(
+            new Vector([settings.nbCells, settings.nbCells]),
+        );
+        configuration.getCellAt(new Vector())?.addSignal(Symbol.for("Init"));
+        return configuration;
+    }, [initialConfiguration, settings.nbCells]);
+
     const [{ currentStep, configurationHistory }, dispatch] = useReducer(
         diagramReducer,
-        { automaton, initialConfiguration },
+        { automaton, initialConfiguration: effectiveInitialConfiguration },
         ({ automaton, initialConfiguration }) => ({
             currentStep: 0,
             configurationHistory: makeConfigurationHistory(
@@ -101,9 +114,9 @@ export default function Diagram2D({
         dispatch({
             type: "resetHistory",
             automaton,
-            initialConfiguration,
+            initialConfiguration: effectiveInitialConfiguration,
         });
-    }, [automaton, initialConfiguration]);
+    }, [automaton, effectiveInitialConfiguration]);
 
     function incrementStep() {
         dispatch({ type: "changeStep", delta: 1, automaton });

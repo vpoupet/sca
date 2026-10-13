@@ -283,7 +283,7 @@ export default class Automaton {
     }
 
     getDimension(): number {
-        return Math.max(...this.rules.map((rule) => rule.getDimension()), 0);
+        return Math.max(...this.rules.map((rule) => rule.getDimension()), 1);
     }
 
     applyRewriteRules(config: Configuration) {

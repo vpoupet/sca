@@ -1,5 +1,6 @@
+import Vector from "@/classes/Vector.ts";
 import Automaton from "../classes/Automaton.ts";
-import { Configuration } from "../classes/Configuration.ts";
+import { Configuration, Configuration1D } from "../classes/Configuration.ts";
 import "../style/Cell.scss";
 
 import type { SettingsType, Signal } from "../types.ts";
@@ -7,13 +8,13 @@ import CellComponent from "./CellComponent.tsx";
 import { Config1DComponent } from "./Config1DComponent.tsx";
 import Heading from "./Typography.tsx";
 
-type Props ={
+type Props = {
     automaton: Automaton;
-    initialConfiguration: Configuration;
+    initialConfiguration: Configuration | null;
     hiddenSignalsSet?: Set<Signal>;
     settings: SettingsType;
     colorMap: Map<Signal, string>;
-}
+};
 
 export default function Diagram1D({
     automaton,
@@ -22,9 +23,19 @@ export default function Diagram1D({
     settings,
     colorMap,
 }: Props) {
+    if (!initialConfiguration) {
+        // generate initial configuration
+        initialConfiguration = Configuration1D.withSize(
+            new Vector([settings.nbCells]),
+        );
+        initialConfiguration
+            .getCellAt(new Vector([0]))
+            ?.addSignal(Symbol.for("Init"));
+    }
+
     const diagram = automaton.makeDiagram(
         initialConfiguration,
-        settings.nbSteps
+        settings.nbSteps,
     );
     if (settings.timeGoesUp) {
         diagram.reverse();
