@@ -153,4 +153,22 @@ PatternSeed_H: 0,1/2.PatternSeed_H 0,1.PatternScanner_H
 # State 16 + (+9) #hUR
 (HPoint_H Boundary_H): /0.hUR_H
 
+# ============================================================
+# IX. Discrete circle construction
+# ============================================================
+
+# Circle points are delayed two steps from the parabola construction.
+# The axis cursor seeds H0 once per position; H1's first points are
+# seeded explicitly because they precede the general H-point rules.
+Init: 0,0/2.FloorCircle_H
+AxisCursor_H: 0,0/2.FloorCircle_H
+(HPoint_H [K01_H DH0_H]): 0,0/2.FloorCircle_H
+H1Init2_H: 0,0/2.FloorCircle_H
+H1Init3_H: 0,0/2.FloorCircle_H
+
+# A circle point moves right unless its lower parabola boundary rises.
+# Points immediately below a rising upper boundary also move diagonally.
+(FloorCircle_H [K01_H DH0_H] !Next_UR_H): 1,0.FloorCircle_H
+(FloorCircle_H [K01_H DH0_H] [Next_UR_H 0,1.Next_UR_H]): 1,1.FloorCircle_H
+
 @end
